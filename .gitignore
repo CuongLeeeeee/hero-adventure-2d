@@ -100,6 +100,7 @@ Thumbs.db
 Desktop.ini
 
 # Firebase native binaries
+Assets/Firebase/Plugins/x86_64/**
 Assets/Firebase/Plugins/x86_64/*.so
 Assets/Firebase/Plugins/x86_64/*.bundle
 Assets/Firebase/Plugins/x86_64/*.dll
