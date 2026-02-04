@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "460387376261",
+    "project_id": "hero-adventure-1ac29",
+    "storage_bucket": "hero-adventure-1ac29.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:460387376261:android:c0eaa99c5862acd3645dec",
+        "android_client_info": {
+          "package_name": "com.pru213.heroadventure"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsjS7Rsfs-hj84JX-s_ExkeKoG5Urtt_4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
