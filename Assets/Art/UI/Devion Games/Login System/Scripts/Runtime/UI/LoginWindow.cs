@@ -46,8 +46,8 @@ namespace DevionGames.LoginSystem
         protected override void OnStart()
         {
             base.OnStart();
-            username.text = PlayerPrefs.GetString("username", string.Empty);
-            password.text = PlayerPrefs.GetString("password", string.Empty);
+            //username.text = PlayerPrefs.GetString("username", string.Empty);
+            //password.text = PlayerPrefs.GetString("password", string.Empty);
 
             if (rememberMe != null)
             {
