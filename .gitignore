@@ -111,3 +111,8 @@ Packages/com.unity.burst/**/.Runtime/**
 
 *.slnx
 .vsconfig
+
+# Burst
+Packages/**/.Runtime/
+Library/BurstCache/
+Packages/com.unity.burst/
