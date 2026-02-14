@@ -103,7 +103,7 @@ Desktop.ini
 Assets/Firebase/Plugins/x86_64/**
 Assets/Firebase/Plugins/x86_64/*.so
 Assets/Firebase/Plugins/x86_64/*.bundle
-Assets/Firebase/Plugins/x86_64/*.dll
+!Assets/Firebase/Plugins/x86_64/*.dll
 
 # Unity Burst generated
 Packages/com.unity.burst/**/.Runtime/
