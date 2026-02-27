@@ -125,17 +125,16 @@ public class BatEnemy : MonoBehaviour
         Invoke(nameof(EndAttack), 0.5f);
     }
 
-    //void DealDamage()
-    //{
-    //    if (isDead || player == null) return;
+    void DealDamage()
+    {
+        if (isDead || player == null) return;
 
-    //    float dist = Vector2.Distance(transform.position, player.position);
-    //    if (dist <= attackRange * 1.5f)
-    //    {
-    //        PlayerControll p = player.GetComponent<PlayerControll>();
-    //        if (p != null) p.TakeDamage(attackDamage);
-    //    }
-    //}
+        if (Vector2.Distance(transform.position, player.position) <= attackRange * 1.3f)
+        {
+            HeroKnight p = player.GetComponent<HeroKnight>();
+            if (p != null) p.TakeDamage(attackDamage);
+        }
+    }
 
     void EndAttack() => isAttacking = false;
 

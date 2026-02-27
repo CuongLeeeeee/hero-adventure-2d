@@ -141,16 +141,16 @@ public class GolemEnemy : MonoBehaviour
         Invoke(nameof(EndAttack), 1f);
     }
 
-    //void DealDamage()
-    //{
-    //    if (isDead || player == null) return;
+    void DealDamage()
+    {
+        if (isDead || player == null) return;
 
-    //    if (Vector2.Distance(transform.position, player.position) <= attackRange * 1.3f)
-    //    {
-    //        HeroKnight p = player.GetComponent<HeroKnight>();
-    //        if (p != null) p.TakeDamage(attackDamage);
-    //    }
-    //}
+        if (Vector2.Distance(transform.position, player.position) <= attackRange * 1.3f)
+        {
+            HeroKnight p = player.GetComponent<HeroKnight>();
+            if (p != null) p.TakeDamage(attackDamage);
+        }
+    }
 
     void EndAttack() => isAttacking = false;
 
