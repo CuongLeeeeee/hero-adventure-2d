@@ -224,12 +224,12 @@ MonoBehaviour:
   distance: 1
   layerMask:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 0
   attackPoint: {fileID: 4788798344361769452}
   attackRadius: 1
   attackLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
   facingLeft: 0
   animator: {fileID: -4078088631049741705}
 --- !u!95 &-4078088631049741705
