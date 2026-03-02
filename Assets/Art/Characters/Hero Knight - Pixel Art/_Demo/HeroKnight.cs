@@ -199,6 +199,11 @@ public class HeroKnight : MonoBehaviour
         Debug.Log("Không đủ tiền!");
         return false;
     }
+    public void AddGold(int amount)
+    {
+        m_gold += amount;
+        Debug.Log("Vàng hiện tại: " + m_gold);
+    }
 
     // Debug hitbox
     void OnDrawGizmosSelected()
