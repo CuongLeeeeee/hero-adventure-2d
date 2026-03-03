@@ -3,14 +3,16 @@ using System.Collections;
 
 public class HeroKnight : MonoBehaviour
 {
+
+
     [SerializeField] float m_speed = 4.0f;
     [SerializeField] float m_jumpForce = 7.5f;
     [SerializeField] float m_rollForce = 6.0f;
     [SerializeField] bool m_noBlood = false;
     [SerializeField] GameObject m_slideDust;
-    [SerializeField] public int m_gold = 100;
+    [SerializeField] public int m_gold = 0;
     [SerializeField] int maxHealth = 100;
-
+    [SerializeField] public int currentHealth;
     [Header("Combat")]
     [SerializeField] int m_attackDamage = 2;
     [SerializeField] float m_attackRange = 0.8f;
@@ -43,6 +45,8 @@ public class HeroKnight : MonoBehaviour
         m_wallSensorR2 = transform.Find("WallSensor_R2").GetComponent<Sensor_HeroKnight>();
         m_wallSensorL1 = transform.Find("WallSensor_L1").GetComponent<Sensor_HeroKnight>();
         m_wallSensorL2 = transform.Find("WallSensor_L2").GetComponent<Sensor_HeroKnight>();
+        currentHealth = maxHealth;
+        m_gold = 0;
     }
 
     void Update()
@@ -177,12 +181,12 @@ public class HeroKnight : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if (maxHealth <= 0) return;
+        if (currentHealth <= 0) return; // Sửa từ maxHealth thành currentHealth
 
-        maxHealth -= damage;
-        Debug.Log("Hero Health: " + maxHealth);
+        currentHealth -= damage; // Sửa từ maxHealth -= damage
+        Debug.Log("Hero Health: " + currentHealth);
 
-        if (maxHealth <= 0)
+        if (currentHealth <= 0)
             m_animator.SetTrigger("Death");
         else
             m_animator.SetTrigger("Hurt");
@@ -211,5 +215,18 @@ public class HeroKnight : MonoBehaviour
         Vector2 center = (Vector2)transform.position +
                          new Vector2(m_attackOffset.x * m_facingDirection, m_attackOffset.y);
         Gizmos.DrawWireSphere(center, m_attackRange);
+    }
+
+    // Hàm để hồi đầy máu
+    public void RestoreFullHealth()
+    {
+        currentHealth = maxHealth;
+        Debug.Log("Đã hồi đầy máu!");
+    }
+
+    // Hàm kiểm tra xem máu có đang đầy không
+    public bool IsHealthFull()
+    {
+        return currentHealth >= maxHealth;
     }
 }

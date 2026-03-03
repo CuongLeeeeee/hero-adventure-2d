@@ -31,6 +31,9 @@ public class NPCShopController : MonoBehaviour
 
     public void ToggleShop()
     {
+        notifyText.text = ""; // Xóa thông báo cũ
+        notifyText.gameObject.SetActive(false);
+
         if (shopPanel == null) return;
         bool isActive = !shopPanel.activeSelf;
 
@@ -162,16 +165,48 @@ public class NPCShopController : MonoBehaviour
         {
             HeroKnight playerScript = playerObj.GetComponent<HeroKnight>();
 
+            // --- LOGIC KIỂM TRA MÁU MỚI ---
+            if (selectedItemName == "Thuốc hồi máu")
+            {
+                // Giả sử biến máu trong HeroKnight là m_health hoặc currentHealth
+                // Ở đây tao dùng m_health theo chuẩn thường thấy của script này
+                if (playerScript.currentHealth >= 100)
+                {
+                    ShowNotify("Máu đang đầy, không thể mua!");
+                    return; // Thoát hàm luôn, không trừ tiền
+                }
+            }
+            // ------------------------------
+
             if (playerScript.SpendGold(selectedPrice))
             {
+                // Thực hiện cộng vật phẩm/hiệu ứng sau khi trừ tiền thành công
+                ApplyItemEffect(playerScript, selectedItemName);
+
                 UpdateGoldDisplay(playerScript.m_gold);
                 ShowNotify("Mua " + selectedItemName + " thành công!");
-
             }
             else
             {
                 ShowNotify("Bạn không đủ vàng!");
             }
+        }
+    }
+
+    // Hàm phụ để xử lý hiệu ứng vật phẩm
+    private void ApplyItemEffect(HeroKnight player, string itemName)
+    {
+        switch (itemName)
+        {
+            case "Thuốc hồi máu":
+                player.RestoreFullHealth(); // Gọi hàm này thay vì gán bằng 100
+                break;
+            case "Thuốc stamina":
+                // Logic cộng stamina  
+                break;
+            case "Phi tiêu":
+                // Logic cộng số lượng phi tiêu
+                break;
         }
     }
 
