@@ -2,6 +2,10 @@ using UnityEngine;
 
 public class BatEnemy : MonoBehaviour
 {
+    [Header("Drop Settings")]
+    public GameObject coinPrefab;
+    public int goldDropAmount = 3;
+
     [Header("Movement")]
     public float flySpeed = 2f;         
     public float flyRadius = 2f;       
@@ -125,17 +129,16 @@ public class BatEnemy : MonoBehaviour
         Invoke(nameof(EndAttack), 0.5f);
     }
 
-    //void DealDamage()
-    //{
-    //    if (isDead || player == null) return;
+    void DealDamage()
+    {
+        if (isDead || player == null) return;
 
-    //    float dist = Vector2.Distance(transform.position, player.position);
-    //    if (dist <= attackRange * 1.5f)
-    //    {
-    //        PlayerControll p = player.GetComponent<PlayerControll>();
-    //        if (p != null) p.TakeDamage(attackDamage);
-    //    }
-    //}
+        if (Vector2.Distance(transform.position, player.position) <= attackRange * 1.3f)
+        {
+            HeroKnight p = player.GetComponent<HeroKnight>();
+            if (p != null) p.TakeDamage(attackDamage);
+        }
+    }
 
     void EndAttack() => isAttacking = false;
 
@@ -156,8 +159,24 @@ public class BatEnemy : MonoBehaviour
 
         var col = GetComponent<Collider2D>();
         if (col != null) col.enabled = false;
+        DropGold();
+
 
         Destroy(gameObject, 1.5f);
+    }
+    void DropGold()
+    {
+        if (coinPrefab == null) return;
+
+        for (int i = 0; i < goldDropAmount; i++)
+        {
+            Vector2 randomOffset = new Vector2(
+                Random.Range(-0.5f, 0.5f),
+                Random.Range(0f, 0.5f)
+            );
+
+            Instantiate(coinPrefab, (Vector2)transform.position + randomOffset, Quaternion.identity);
+        }
     }
 
     void OnDrawGizmosSelected()

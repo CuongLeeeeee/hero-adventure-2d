@@ -2,6 +2,10 @@
 
 public class GolemEnemy : MonoBehaviour
 {
+    [Header("Drop Settings")]
+    public GameObject coinPrefab;
+    public int goldDropAmount = 5;
+
     [Header("Movement")]
     public float walkSpeed = 1.5f;
     public float patrolDistance = 4f;
@@ -141,16 +145,16 @@ public class GolemEnemy : MonoBehaviour
         Invoke(nameof(EndAttack), 1f);
     }
 
-    //void DealDamage()
-    //{
-    //    if (isDead || player == null) return;
+    void DealDamage()
+    {
+        if (isDead || player == null) return;
 
-    //    if (Vector2.Distance(transform.position, player.position) <= attackRange * 1.3f)
-    //    {
-    //        HeroKnight p = player.GetComponent<HeroKnight>();
-    //        if (p != null) p.TakeDamage(attackDamage);
-    //    }
-    //}
+        if (Vector2.Distance(transform.position, player.position) <= attackRange * 1.3f)
+        {
+            HeroKnight p = player.GetComponent<HeroKnight>();
+            if (p != null) p.TakeDamage(attackDamage);
+        }
+    }
 
     void EndAttack() => isAttacking = false;
 
@@ -260,8 +264,23 @@ public class GolemEnemy : MonoBehaviour
 
         if (animator != null)
             animator.SetTrigger("Die");
+        DropGold();
 
         Destroy(gameObject, 2f);
+    }
+    void DropGold()
+    {
+        if (coinPrefab == null) return;
+
+        for (int i = 0; i < goldDropAmount; i++)
+        {
+            Vector2 randomOffset = new Vector2(
+                Random.Range(-0.5f, 0.5f),
+                Random.Range(0f, 0.5f)
+            );
+
+            Instantiate(coinPrefab, (Vector2)transform.position + randomOffset, Quaternion.identity);
+        }
     }
 
     void OnDrawGizmosSelected()
