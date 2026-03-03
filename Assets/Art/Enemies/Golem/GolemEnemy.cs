@@ -141,7 +141,7 @@ public class GolemEnemy : MonoBehaviour
         if (animator != null)
             animator.SetTrigger("Attack");
 
-        //Invoke(nameof(DealDamage), 0.5f);
+        Invoke(nameof(DealDamage), 0.5f);
         Invoke(nameof(EndAttack), 1f);
     }
 

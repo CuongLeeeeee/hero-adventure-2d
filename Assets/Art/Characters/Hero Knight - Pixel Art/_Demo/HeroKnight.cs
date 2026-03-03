@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using TMPro;
 
 public class HeroKnight : MonoBehaviour
 {
@@ -35,6 +36,7 @@ public class HeroKnight : MonoBehaviour
     private float m_delayToIdle = 0.0f;
     private float m_rollDuration = 8.0f / 14.0f;
     private float m_rollCurrentTime;
+    public TextMeshProUGUI healthText;
 
     void Start()
     {
@@ -47,6 +49,7 @@ public class HeroKnight : MonoBehaviour
         m_wallSensorL2 = transform.Find("WallSensor_L2").GetComponent<Sensor_HeroKnight>();
         currentHealth = maxHealth;
         m_gold = 0;
+        healthText.text = "Health: " + currentHealth;
     }
 
     void Update()
@@ -184,6 +187,7 @@ public class HeroKnight : MonoBehaviour
         if (currentHealth <= 0) return; // Sửa từ maxHealth thành currentHealth
 
         currentHealth -= damage; // Sửa từ maxHealth -= damage
+        healthText.text = "Health: " + currentHealth;
         Debug.Log("Hero Health: " + currentHealth);
 
         if (currentHealth <= 0)
@@ -221,6 +225,7 @@ public class HeroKnight : MonoBehaviour
     public void RestoreFullHealth()
     {
         currentHealth = maxHealth;
+        healthText.text = "Health: " + currentHealth;
         Debug.Log("Đã hồi đầy máu!");
     }
 
