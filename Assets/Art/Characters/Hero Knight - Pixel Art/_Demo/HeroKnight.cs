@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using TMPro;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class HeroKnight : MonoBehaviour
 {
@@ -19,6 +21,7 @@ public class HeroKnight : MonoBehaviour
     [SerializeField] float m_attackRange = 0.8f;
     [SerializeField] Vector2 m_attackOffset = new Vector2(1.0f, 0.2f);
     [SerializeField] LayerMask m_enemyLayer; // set Enemy layer trong Inspector
+    GameManager gameManager;
 
     private Animator m_animator;
     private Rigidbody2D m_body2d;
@@ -36,7 +39,8 @@ public class HeroKnight : MonoBehaviour
     private float m_delayToIdle = 0.0f;
     private float m_rollDuration = 8.0f / 14.0f;
     private float m_rollCurrentTime;
-    public TextMeshProUGUI healthText;
+    public Image healthBar;
+   
 
     void Start()
     {
@@ -47,9 +51,11 @@ public class HeroKnight : MonoBehaviour
         m_wallSensorR2 = transform.Find("WallSensor_R2").GetComponent<Sensor_HeroKnight>();
         m_wallSensorL1 = transform.Find("WallSensor_L1").GetComponent<Sensor_HeroKnight>();
         m_wallSensorL2 = transform.Find("WallSensor_L2").GetComponent<Sensor_HeroKnight>();
+        gameManager = FindObjectOfType<GameManager>();
         currentHealth = maxHealth;
         m_gold = 0;
-        healthText.text = "Health: " + currentHealth;
+        healthBar.fillAmount = (float)currentHealth / maxHealth;
+        
     }
 
     void Update()
@@ -187,13 +193,18 @@ public class HeroKnight : MonoBehaviour
         if (currentHealth <= 0) return; // Sửa từ maxHealth thành currentHealth
 
         currentHealth -= damage; // Sửa từ maxHealth -= damage
-        healthText.text = "Health: " + currentHealth;
+        healthBar.fillAmount = (float)currentHealth / maxHealth;
         Debug.Log("Hero Health: " + currentHealth);
 
         if (currentHealth <= 0)
+        {
             m_animator.SetTrigger("Death");
+            gameManager.GameOver();
+        }
         else
+        {
             m_animator.SetTrigger("Hurt");
+        }
     }
 
     public bool SpendGold(int amount)
@@ -225,7 +236,7 @@ public class HeroKnight : MonoBehaviour
     public void RestoreFullHealth()
     {
         currentHealth = maxHealth;
-        healthText.text = "Health: " + currentHealth;
+        healthBar.fillAmount = (float)currentHealth / maxHealth;
         Debug.Log("Đã hồi đầy máu!");
     }
 
@@ -234,4 +245,5 @@ public class HeroKnight : MonoBehaviour
     {
         return currentHealth >= maxHealth;
     }
+    
 }
