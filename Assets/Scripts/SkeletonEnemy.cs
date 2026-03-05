@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class SkeletonEnemy : MonoBehaviour
 {
@@ -6,6 +6,10 @@ public class SkeletonEnemy : MonoBehaviour
     public int maxHealth = 5;
     public float moveSpeed = 2f;
     public float chaseSpeed = 4f;
+
+    [Header("Drop Settings")]
+    public GameObject coinPrefab;
+    public int goldDropAmount = 3;
 
     [Header("Detection")]
     public Transform player;
@@ -22,34 +26,38 @@ public class SkeletonEnemy : MonoBehaviour
     public Transform attackPoint;
     public float attackRadius = 1f;
     public LayerMask attackLayer;
+    public float attackCooldown = 1.5f;
+    public int attackDamage = 3;
 
     [Header("State")]
     public bool facingLeft = true;
     public Animator animator;
 
+    private float lastAttackTime;
+    private bool isAttacking = false;
+    private bool isDead = false;
+    private int currentHealth;
+    private Rigidbody2D rb;
+    private Collider2D col;
+
     void Start()
     {
+        currentHealth = maxHealth;
+        rb = GetComponent<Rigidbody2D>();
+        col = GetComponent<Collider2D>();
         FaceLeft();
     }
 
     void Update()
     {
-        if (maxHealth <= 0)
-        {
-            Die();
-            return;
-        }
+        if (isDead) return;
 
         UpdateRangeState();
 
         if (inRange)
-        {
             HandleChaseAndAttack();
-        }
         else
-        {
             Patrol();
-        }
     }
 
     // ===================== STATES =====================
@@ -71,8 +79,8 @@ public class SkeletonEnemy : MonoBehaviour
         }
         else
         {
-            animator.SetBool("Attack 1", true);
-            Attack();
+            if (Time.time >= lastAttackTime + attackCooldown && !isAttacking)
+                Attack();
         }
     }
 
@@ -82,9 +90,7 @@ public class SkeletonEnemy : MonoBehaviour
         transform.Translate(Vector2.right * moveSpeed * Time.deltaTime);
 
         if (!IsGroundAhead())
-        {
             Flip();
-        }
     }
 
     // ===================== MOVEMENT =====================
@@ -108,21 +114,15 @@ public class SkeletonEnemy : MonoBehaviour
     void FlipToPlayer()
     {
         if (player.position.x < transform.position.x)
-        {
             FaceLeft();
-        }
         else if (player.position.x > transform.position.x)
-        {
             FaceRight();
-        }
     }
 
     void Flip()
     {
-        if (facingLeft)
-            FaceRight();
-        else
-            FaceLeft();
+        if (facingLeft) FaceRight();
+        else FaceLeft();
     }
 
     void FaceLeft()
@@ -152,29 +152,83 @@ public class SkeletonEnemy : MonoBehaviour
 
     // ===================== COMBAT =====================
 
-    public void Attack()
+    void Attack()
     {
-        Collider2D col = Physics2D.OverlapCircle(
-            attackPoint.position,
-            attackRadius,
-            attackLayer
-        );
+        isAttacking = true;
+        lastAttackTime = Time.time;
 
-        if (col != null && col.GetComponent<HeroKnight>() != null)
+        animator.SetBool("Attack 1", true);
+
+        Invoke(nameof(DealDamage), 0.5f);
+        Invoke(nameof(EndAttack), 1f);
+    }
+
+    void DealDamage()
+    {
+        if (isDead || player == null) return;
+
+        if (Vector2.Distance(transform.position, player.position) <= retreatDistance * 1.3f)
         {
-            col.GetComponent<HeroKnight>().TakeDamage(3);
+            HeroKnight p = player.GetComponent<HeroKnight>();
+            if (p != null) p.TakeDamage(attackDamage);
         }
     }
 
+    void EndAttack()
+    {
+        isAttacking = false;
+        animator.SetBool("Attack 1", false);
+    }
+
+    // ===================== TAKE DAMAGE =====================
+
     public void TakeDamage(int damage)
     {
-        if (maxHealth <= 0) return;
-        maxHealth -= damage;
+        if (isDead) return;
+
+        currentHealth -= damage;
+
+        if (animator != null)
+            animator.SetTrigger("Hurt");
+
+        if (currentHealth <= 0)
+            Die();
     }
 
     void Die()
     {
-        Destroy(gameObject);
+        isDead = true;
+
+        animator.SetBool("Attack 1", false);
+
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.gravityScale = 0;
+        }
+
+        if (col != null)
+            col.enabled = false;
+
+        if (animator != null)
+            animator.SetTrigger("Death");
+
+        DropGold();
+        Destroy(gameObject, 2f);
+    }
+
+    void DropGold()
+    {
+        if (coinPrefab == null) return;
+
+        for (int i = 0; i < goldDropAmount; i++)
+        {
+            Vector2 randomOffset = new Vector2(
+                Random.Range(-0.5f, 0.5f),
+                Random.Range(0f, 0.5f)
+            );
+            Instantiate(coinPrefab, (Vector2)transform.position + randomOffset, Quaternion.identity);
+        }
     }
 
     // ===================== GIZMOS =====================
