@@ -125,7 +125,7 @@ public class BatEnemy : MonoBehaviour
         if (animator != null)
             animator.SetTrigger(attackComboCount % 2 == 1 ? "Attack1" : "Attack2");
 
-        //Invoke(nameof(DealDamage), 0.3f);
+        Invoke(nameof(DealDamage), 0.3f);
         Invoke(nameof(EndAttack), 0.5f);
     }
 
