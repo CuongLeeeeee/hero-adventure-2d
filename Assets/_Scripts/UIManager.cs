@@ -338,4 +338,5 @@ public class UIManager : MonoBehaviour
         public User user;
     }
     [Serializable] public class User { public string id; public string email; public bool email_confirmed_at; }
+
 }
