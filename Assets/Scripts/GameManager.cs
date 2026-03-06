@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+
         if (isGameOver && Input.GetKeyDown(KeyCode.F))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);

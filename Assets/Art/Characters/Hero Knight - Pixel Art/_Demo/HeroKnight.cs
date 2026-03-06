@@ -40,7 +40,8 @@ public class HeroKnight : MonoBehaviour
     private float m_rollDuration = 8.0f / 14.0f;
     private float m_rollCurrentTime;
     public Image healthBar;
-   
+    private bool isDead = false;
+
 
     void Start()
     {
@@ -60,6 +61,7 @@ public class HeroKnight : MonoBehaviour
 
     void Update()
     {
+        if (isDead) return;
         m_timeSinceAttack += Time.deltaTime;
 
         if (m_rolling)
@@ -191,6 +193,7 @@ public class HeroKnight : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        
         if (currentHealth <= 0) return; // Sửa từ maxHealth thành currentHealth
 
         currentHealth -= damage; // Sửa từ maxHealth -= damage
@@ -199,6 +202,7 @@ public class HeroKnight : MonoBehaviour
 
         if (currentHealth <= 0)
         {
+            isDead = true;
             m_animator.SetTrigger("Death");
             gameManager.GameOver();
         }
