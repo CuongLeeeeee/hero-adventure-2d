@@ -1,14 +1,24 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Coin : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public float pickupDelay = 0.25f; // thời gian chờ trước khi nhặt
+    private bool canPickup = false;
+
     void Start()
     {
-        
+        Invoke(nameof(EnablePickup), pickupDelay);
     }
+
+    void EnablePickup()
+    {
+        canPickup = true;
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if (!canPickup) return;
+
         HeroKnight hero = other.GetComponent<HeroKnight>();
 
         if (hero != null)
@@ -16,10 +26,5 @@ public class Coin : MonoBehaviour
             hero.AddGold(10);
             Destroy(gameObject);
         }
-    }
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
