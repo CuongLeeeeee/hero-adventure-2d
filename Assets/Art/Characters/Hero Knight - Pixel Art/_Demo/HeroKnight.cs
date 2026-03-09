@@ -173,6 +173,7 @@ public class HeroKnight : MonoBehaviour
             h.GetComponent<GolemEnemy>()?.TakeDamage(m_attackDamage);
             h.GetComponent<BatEnemy>()?.TakeDamage(m_attackDamage);
             h.GetComponent<SkeletonEnemy>()?.TakeDamage(m_attackDamage);
+            h.GetComponent<PatrolEnemy>()?.TakeDamage(m_attackDamage);
             h.GetComponent<FireDemon>()?.TakeDamage(m_attackDamage);
         }
     }
