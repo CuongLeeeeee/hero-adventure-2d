@@ -1,14 +1,10 @@
 fileFormatVersion: 2
-guid: 08d5ec2d201ece949a5e428ba3ea0e63
-AssetOrigin:
-  serializedVersion: 1
-  productId: 245521
-  packageName: RPG icons free starter pack
-  packageVersion: 1.1
-  assetPath: Assets/RGP icons free start pack/items/sword_basic_blue.png
-  uploadId: 687566
+guid: a7901f2495d9747488cb1fe6e0b8e710
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 9053838605538260231
+    second: dart2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -50,17 +46,17 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 1
-  spriteExtrude: 2
-  spriteMeshType: 0
-  alignment: 9
-  spritePivot: {x: 0.17773438, y: 0.16992188}
-  spritePixelsToUnits: 600
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 300
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
-  spriteTessellationDetail: 0
+  spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
@@ -72,11 +68,11 @@ TextureImporter:
   ignorePngGamma: 0
   applyGammaDecoding: 0
   swizzle: 50462976
-  cookieLightType: 1
+  cookieLightType: 0
   platformSettings:
   - serializedVersion: 4
     buildTarget: DefaultTexturePlatform
-    maxTextureSize: 1024
+    maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
@@ -115,13 +111,35 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: dart2_0
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 67
+        width: 223
+        height: 224
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 70573d01e32b5ad70800000000000000
+      internalID: 9053838605538260231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
-    internalID: 1537655665
+    spriteID: 
+    internalID: 0
     vertices: []
     indices: 
     edges: []
@@ -129,7 +147,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      dart2_0: 9053838605538260231
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

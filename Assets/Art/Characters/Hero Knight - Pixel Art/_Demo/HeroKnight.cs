@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts;
+using UnityEngine;
 using System.Collections;
 using TMPro;
 using UnityEngine.UI;
@@ -17,11 +18,19 @@ public class HeroKnight : MonoBehaviour
     [SerializeField] int maxHealth = 100;
     [SerializeField] public int currentHealth;
     [Header("Combat")]
-    [SerializeField] int m_attackDamage = 2;
+    [SerializeField] public int m_attackDamage = 1;
+    [SerializeField] public int m_dartBonusDamage = 0;   // Damage cộng thêm cho phi tiêu
     [SerializeField] float m_attackRange = 0.8f;
     [SerializeField] Vector2 m_attackOffset = new Vector2(1.0f, 0.2f);
     [SerializeField] LayerMask m_enemyLayer; // set Enemy layer trong Inspector
     GameManager gameManager;
+
+
+    //Phi tiêu
+    [Header("Ranged Combat")]
+    [SerializeField] GameObject m_dartPrefab; // Kéo Prefab phi tiêu vào đây
+    [SerializeField] Transform m_launchPoint; // Điểm xuất hiện phi tiêu (ví dụ ngay tay)
+    public int m_dartCount = 0; // Số lượng phi tiêu hiện có
 
     private Animator m_animator;
     private Rigidbody2D m_body2d;
@@ -57,6 +66,11 @@ public class HeroKnight : MonoBehaviour
         m_gold = 0;
         healthBar.fillAmount = (float)currentHealth / maxHealth;
         
+
+        if (Assets.Scripts.GameHUDManager.Instance != null)
+        {
+            Assets.Scripts.GameHUDManager.Instance.UpdateDartCount(m_dartCount);
+        }
     }
 
     void Update()
@@ -81,15 +95,18 @@ public class HeroKnight : MonoBehaviour
         }
 
         float inputX = Input.GetAxis("Horizontal");
+ 
 
         if (inputX > 0)
         {
-            GetComponent<SpriteRenderer>().flipX = false;
+            // Lật sang phải bằng cách gán Scale.X = 1
+            transform.localScale = new Vector3(1f, transform.localScale.y, 1f);
             m_facingDirection = 1;
         }
         else if (inputX < 0)
         {
-            GetComponent<SpriteRenderer>().flipX = true;
+            // Lật sang trái bằng cách gán Scale.X = -1
+            transform.localScale = new Vector3(-1f, transform.localScale.y, 1f);
             m_facingDirection = -1;
         }
 
@@ -160,8 +177,42 @@ public class HeroKnight : MonoBehaviour
             if (m_delayToIdle < 0)
                 m_animator.SetInteger("AnimState", 0);
         }
+
+
+        // Phóng phi tiêu bằng phím S
+        if (Input.GetKeyDown(KeyCode.S) && m_dartCount > 0 && !m_rolling)
+        {
+            LaunchDart();
+        }
     }
 
+    void LaunchDart()
+    {
+        if (m_dartCount > 0)
+        {
+            m_dartCount--;
+            Assets.Scripts.GameHUDManager.Instance.UpdateDartCount(m_dartCount);
+
+            GameObject dartObj = Instantiate(m_dartPrefab, m_launchPoint.position, Quaternion.identity);
+
+            // Truyền tổng damage (Damage gốc của phi tiêu + Bonus tích lũy được)
+            Dart dartScript = dartObj.GetComponent<Dart>();
+            if (dartScript != null)
+            {
+                // damageAmount là biến có sẵn trong script Dart của mày
+                dartScript.damage += m_dartBonusDamage;
+            }
+
+            dartObj.transform.localScale = Vector3.one;
+            dartScript.Launch(m_facingDirection);
+        }
+    }
+
+    public void Launch(int direction)
+    {
+        GetComponent<Rigidbody2D>().linearVelocity = new Vector2(direction * m_speed, 0);
+        transform.localScale = new Vector3(direction, 1, 1);
+    }
     // ====== PLAYER HIT ======
     public void AE_AttackHit()
     {
@@ -198,8 +249,10 @@ public class HeroKnight : MonoBehaviour
         if (currentHealth <= 0) return; // Sửa từ maxHealth thành currentHealth
 
         currentHealth -= damage; // Sửa từ maxHealth -= damage
-        healthBar.fillAmount = (float)currentHealth / maxHealth;
         Debug.Log("Hero Health: " + currentHealth);
+        healthBar.fillAmount = (float)currentHealth / maxHealth;
+        if (currentHealth <= 0) return;  
+        
 
         if (currentHealth <= 0)
         {
@@ -238,7 +291,6 @@ public class HeroKnight : MonoBehaviour
         Gizmos.DrawWireSphere(center, m_attackRange);
     }
 
-    // Hàm để hồi đầy máu
     public void RestoreFullHealth()
     {
         currentHealth = maxHealth;
@@ -246,10 +298,31 @@ public class HeroKnight : MonoBehaviour
         Debug.Log("Đã hồi đầy máu!");
     }
 
-    // Hàm kiểm tra xem máu có đang đầy không
     public bool IsHealthFull()
     {
         return currentHealth >= maxHealth;
     }
-    
+    public void AddDarts(int amount)
+    {
+        m_dartCount += amount;  
+        
+        if (Assets.Scripts.GameHUDManager.Instance != null)
+        {
+            Assets.Scripts.GameHUDManager.Instance.UpdateDartCount(m_dartCount);
+        }
+    }
+    public void IncreaseDamage(int amount)
+    {
+        m_attackDamage += amount;
+
+        if (m_dartCount > 0)
+        {
+            m_dartBonusDamage += amount;
+            Debug.Log("Đã tăng damage cho cả Kiếm và Phi tiêu!");
+        }
+        else
+        {
+            Debug.Log("Không có phi tiêu, thuốc chỉ tăng damage cho Kiếm!");
+        }
+    }
 }
