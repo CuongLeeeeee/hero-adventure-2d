@@ -32,6 +32,9 @@ public class FireDemon : MonoBehaviour
     public bool facingLeft = false;
     public Animator animator;
 
+    [Header("UI")]
+    public EnemyHealthBar healthBar;
+
     private float lastAttackTime;
     private bool isAttacking = false;
     private bool isDead = false;
@@ -196,6 +199,9 @@ public class FireDemon : MonoBehaviour
 
         currentHealth -= damage;
         animator.SetTrigger("Hurt");
+
+        if (healthBar != null)
+            healthBar.SetHealth(currentHealth, maxHealth);
 
         if (currentHealth <= 0)
             Die();

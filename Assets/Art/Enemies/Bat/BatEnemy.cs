@@ -18,6 +18,7 @@ public class BatEnemy : MonoBehaviour
     public int attackDamage = 1;       
     public int health = 2;              
 
+
     [Header("Flying Settings")]
     public float minHeightAbovePlayer = 1.5f;
     public float stopDistance = 1.5f;
@@ -27,7 +28,9 @@ public class BatEnemy : MonoBehaviour
     [Header("Sprite Settings")]
     public bool spriteDefaultFacingLeft = false;
 
-    
+    [Header("UI")]
+    public EnemyHealthBar healthBar;
+
     private Transform player;
     private Vector3 startPosition;
     private float flyAngle = 0f;
@@ -35,7 +38,7 @@ public class BatEnemy : MonoBehaviour
     private int attackComboCount = 0;
     private bool isDead = false;
     private bool isAttacking = false;
-
+    private int maxHealth = 2;
     void Start()
     {
         startPosition = transform.position;
@@ -148,6 +151,9 @@ public class BatEnemy : MonoBehaviour
 
         health -= damage;
         if (animator != null) animator.SetTrigger("Hurt");
+
+        if (healthBar != null)
+            healthBar.SetHealth(health, maxHealth);
 
         if (health <= 0) Die();
     }

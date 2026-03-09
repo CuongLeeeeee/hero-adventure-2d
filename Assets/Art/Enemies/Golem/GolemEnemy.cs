@@ -34,6 +34,9 @@ public class GolemEnemy : MonoBehaviour
     [Header("Sprite")]
     public bool spriteDefaultFacingLeft = false;
 
+    [Header("UI")]
+    public EnemyHealthBar healthBar;
+
     // Private
     private Transform player;
     private Vector3 startPosition;
@@ -196,6 +199,10 @@ public class GolemEnemy : MonoBehaviour
         if (animator != null)
             animator.SetTrigger("Hurt");
 
+
+        if (healthBar != null)
+            healthBar.SetHealth(currentHealth, maxHealth);
+
         if (currentHealth <= 0)
         {
             if (currentReviveCount > 0)
@@ -240,7 +247,8 @@ public class GolemEnemy : MonoBehaviour
         currentHealth = healthAfterRevive;
         isDead = false;
         isReviving = false;
-
+        if (healthBar != null)
+            healthBar.SetHealth(currentHealth, maxHealth);
         if (rb != null)
             rb.gravityScale = 1;
 
