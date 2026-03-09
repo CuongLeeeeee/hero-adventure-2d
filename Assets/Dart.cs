@@ -14,15 +14,11 @@ public class Dart : MonoBehaviour
 
     public void Launch(int direction)
     {
-        // Bay theo hướng nhân vật đang nhìn
+        // 1. Bay thẳng theo trục X (vận tốc Y = 0)
         GetComponent<Rigidbody2D>().linearVelocity = new Vector2(direction * speed, 0);
 
-        // Xoay hình ảnh phi tiêu theo đúng hướng bay
-        if (direction < 0)
-            transform.localScale = new Vector3(-1, 1, 1);
-
-        // Thay vì nhân với localScale, ta ép cứng nó về giá trị tuyệt đối
-        // Giả sử phi tiêu gốc của mày có kích thước đẹp là 0.5f
+        // 2. Chỉnh kích thước và hướng nhìn của phi tiêu
+        // Giả sử 0.5f là kích thước mày thấy vừa mắt nhất
         float baseScale = 0.5f;
         transform.localScale = new Vector3(direction * baseScale, baseScale, 1f);
     }
