@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Assets.Scripts;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -165,25 +166,24 @@ public class NPCShopController : MonoBehaviour
         {
             HeroKnight playerScript = playerObj.GetComponent<HeroKnight>();
 
-            // --- LOGIC KIỂM TRA MÁU MỚI ---
             if (selectedItemName == "Thuốc hồi máu")
             {
-                // Giả sử biến máu trong HeroKnight là m_health hoặc currentHealth
-                // Ở đây tao dùng m_health theo chuẩn thường thấy của script này
                 if (playerScript.currentHealth >= 100)
                 {
                     ShowNotify("Máu đang đầy, không thể mua!");
-                    return; // Thoát hàm luôn, không trừ tiền
                 }
             }
-            // ------------------------------
+
 
             if (playerScript.SpendGold(selectedPrice))
             {
-                // Thực hiện cộng vật phẩm/hiệu ứng sau khi trừ tiền thành công
                 ApplyItemEffect(playerScript, selectedItemName);
 
                 UpdateGoldDisplay(playerScript.m_gold);
+                if (selectedItemName == "Phi tiêu" && GameHUDManager.Instance != null)
+                {
+                    GameHUDManager.Instance.UpdateDartCount(playerScript.m_dartCount);
+                }
                 ShowNotify("Mua " + selectedItemName + " thành công!");
             }
             else
@@ -193,19 +193,18 @@ public class NPCShopController : MonoBehaviour
         }
     }
 
-    // Hàm phụ để xử lý hiệu ứng vật phẩm
     private void ApplyItemEffect(HeroKnight player, string itemName)
     {
         switch (itemName)
         {
             case "Thuốc hồi máu":
-                player.RestoreFullHealth(); // Gọi hàm này thay vì gán bằng 100
+                player.RestoreFullHealth();
                 break;
             case "Thuốc stamina":
-                // Logic cộng stamina  
+                player.IncreaseDamage(1);
                 break;
             case "Phi tiêu":
-                // Logic cộng số lượng phi tiêu
+                player.AddDarts(10);
                 break;
         }
     }
