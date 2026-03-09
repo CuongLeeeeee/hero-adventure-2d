@@ -21,6 +21,8 @@ public class HeroKnight : MonoBehaviour
     [SerializeField] float m_attackRange = 0.8f;
     [SerializeField] Vector2 m_attackOffset = new Vector2(1.0f, 0.2f);
     [SerializeField] LayerMask m_enemyLayer; // set Enemy layer trong Inspector
+    [SerializeField] float attackCooldown = 0.6f;
+    [SerializeField] float rollCooldown = 2.0f;
     GameManager gameManager;
 
     private Animator m_animator;
@@ -39,6 +41,8 @@ public class HeroKnight : MonoBehaviour
     private float m_delayToIdle = 0.0f;
     private float m_rollDuration = 8.0f / 14.0f;
     private float m_rollCurrentTime;
+    float lastAttackTime = -10f;
+    float lastRollTime = -10f;
     public Image healthBar;
     private bool isDead = false;
 
@@ -101,17 +105,18 @@ public class HeroKnight : MonoBehaviour
         m_isWallSliding = (m_wallSensorR1.State() && m_wallSensorR2.State()) || (m_wallSensorL1.State() && m_wallSensorL2.State());
         m_animator.SetBool("WallSlide", m_isWallSliding);
 
-        if (Input.GetKeyDown("e") && !m_rolling)
-        {
-            m_animator.SetBool("noBlood", m_noBlood);
-            m_animator.SetTrigger("Death");
-        }
-        else if (Input.GetKeyDown("q") && !m_rolling)
-            m_animator.SetTrigger("Hurt");
+        //if (Input.GetKeyDown("e") && !m_rolling)
+        //{
+        //    m_animator.SetBool("noBlood", m_noBlood);
+        //    m_animator.SetTrigger("Death");
+        //}
+        //else if (Input.GetKeyDown("q") && !m_rolling)
+        //    m_animator.SetTrigger("Hurt");
 
-        // Attack
-        else if (Input.GetMouseButtonDown(0) && m_timeSinceAttack > 0.25f && !m_rolling)
+            // Attack
+          if (Input.GetMouseButtonDown(0) && Time.time >= lastAttackTime + attackCooldown && !m_rolling)
         {
+            lastAttackTime = Time.time;
             m_currentAttack++;
 
             if (m_currentAttack > 3)
@@ -132,8 +137,9 @@ public class HeroKnight : MonoBehaviour
         else if (Input.GetMouseButtonUp(1))
             m_animator.SetBool("IdleBlock", false);
 
-        else if (Input.GetKeyDown(KeyCode.LeftShift) && !m_rolling && !m_isWallSliding)
+        else if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time >= lastRollTime + rollCooldown && !m_rolling && !m_isWallSliding)
         {
+            lastRollTime = Time.time;
             m_rolling = true;
             m_rollCurrentTime = 0f;
             m_animator.SetTrigger("Roll");
