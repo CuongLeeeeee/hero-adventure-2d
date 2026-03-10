@@ -3,206 +3,187 @@
 public class PatrolEnemy : MonoBehaviour
 {
     [Header("Stats")]
-    [SerializeField] private int maxHealth = 5;
-    [SerializeField] private float moveSpeed = 1.5f;
-    [SerializeField] private float chaseSpeed = 2f;
+    public int maxHealth = 5;
+    public float moveSpeed = 2f;
+    public float chaseSpeed = 4f;
+
+    [Header("Drop Settings")]
+    public GameObject coinPrefab;
+    public int goldDropAmount = 3;
 
     [Header("Detection")]
-    [SerializeField] private Transform player;
-    [SerializeField] private float detectRange = 10f;
-    [SerializeField] private float attackRange = 2.5f;
-    [SerializeField] private LayerMask heroLayer;
+    public Transform player;
+    public float attackRange = 10f;
+    public float retreatDistance = 2.5f;
+    public bool inRange;
 
     [Header("Ground Check")]
-    [SerializeField] private Transform checkPoint;
-    [SerializeField] private float groundDistance = 1f;
-    [SerializeField] private LayerMask groundLayer;
-
-    [Header("Wall Check")]
-    public Transform wallCheck;
-    public float wallDistance = 0.5f;
-    public LayerMask wallLayer;
+    public Transform checkPoint;
+    public float distance = 1f;
+    public LayerMask layerMask;
 
     [Header("Attack")]
-    [SerializeField] private Transform attackPoint;
-    [SerializeField] private float attackRadius = 1f;
-    [SerializeField] private LayerMask attackLayer;
-    [SerializeField] private float attackCooldown = 1.5f;
-    [SerializeField] private int attackDamage = 3;
+    public Transform attackPoint;
+    public float attackRadius = 1f;
+    public LayerMask attackLayer;
+    public float attackCooldown = 1.5f;
+    public int attackDamage = 3;
 
-    [Header("Drop")]
-    [SerializeField] private GameObject coinPrefab;
-    [SerializeField] private int goldDropAmount = 3;
+    [Header("State")]
+    public bool facingLeft = true;
+    public Animator animator;
 
-    [Header("Animation")]
-    [SerializeField] private Animator animator;
+    [Header("UI")]
+    public EnemyHealthBar healthBar;
 
+    private float lastAttackTime;
+    private bool isAttacking = false;
+    private bool isDead = false;
+    private int currentHealth;
     private Rigidbody2D rb;
     private Collider2D col;
 
-    private bool facingLeft = true;
-    private bool isDead;
-    private bool isAttacking;
-
-    private int currentHealth;
-    private float lastAttackTime;
-
-    private static readonly int Attack = Animator.StringToHash("Attack 1");
-    private static readonly int Hurt = Animator.StringToHash("Hurt");
-    private static readonly int Death = Animator.StringToHash("Death");
-
-    void Awake()
+    void Start()
     {
+        currentHealth = maxHealth;
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
-
-        if (animator == null)
-            animator = GetComponentInChildren<Animator>();
-
-        currentHealth = maxHealth;
+        FaceLeft();
     }
 
     void Update()
     {
-        if (isDead || player == null) return;
+        if (isDead) return;
 
-        float distance = Vector2.Distance(transform.position, player.position);
+        UpdateRangeState();
 
-        if (distance < attackRange)
+        if (inRange)
+            HandleChaseAndAttack();
+        else
+            Patrol();
+    }
+
+    // ===================== STATES =====================
+
+    void UpdateRangeState()
+    {
+        inRange = Vector2.Distance(transform.position, player.position) < attackRange;
+    }
+
+    void HandleChaseAndAttack()
+    {
+        FlipToPlayer();
+
+        float distanceToPlayer = Vector2.Distance(transform.position, player.position);
+
+        if (distanceToPlayer > retreatDistance)
         {
-            TryAttack();
-        }
-        else if (DetectHero())
-        {
-            Chase();
+            ChasePlayer();
         }
         else
         {
-            Patrol();
+            if (Time.time >= lastAttackTime + attackCooldown && !isAttacking)
+                Attack();
         }
     }
 
     void Patrol()
     {
-        if (!IsGroundAhead() || IsWallAhead())
-        {
+        animator.SetBool("Attack", false);
+        transform.Translate(Vector2.left * moveSpeed * Time.deltaTime);
+
+        if (!IsGroundAhead())
             Flip();
+    }
+
+    // ===================== MOVEMENT =====================
+
+    void ChasePlayer()
+    {
+        animator.SetBool("Attack", false);
+
+        if (!IsGroundAhead())
             return;
-        }
 
-        Move(moveSpeed);
-    }
-
-    void Chase()
-    {
-        FlipToPlayer();
-
-        if (!IsGroundAhead() || IsWallAhead())
-        {
-            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-            return;
-        }
-
-        Move(chaseSpeed);
-    }
-
-    void Move(float speed)
-    {
-        if (isAttacking) return;
-
-        float direction = facingLeft ? -1 : 1;
-
-        rb.linearVelocity = new Vector2(direction * speed, rb.linearVelocity.y);
-    }
-
-    void TryAttack()
-    {
-        if (Time.time < lastAttackTime + attackCooldown) return;
-
-        lastAttackTime = Time.time;
-        isAttacking = true;
-
-        rb.linearVelocity = Vector2.zero;
-
-        animator.SetTrigger(Attack);
-
-        Invoke(nameof(DealDamage), 0.4f);
-        Invoke(nameof(ResetAttack), 0.8f);
-    }
-
-    void ResetAttack()
-    {
-        isAttacking = false;
-    }
-
-    void DealDamage()
-    {
-        Collider2D hit = Physics2D.OverlapCircle(
-            attackPoint.position,
-            attackRadius,
-            attackLayer
+        transform.position = Vector2.MoveTowards(
+            transform.position,
+            player.position,
+            chaseSpeed * Time.deltaTime
         );
-
-        if (hit != null && hit.TryGetComponent(out HeroKnight hero))
-        {
-            hero.TakeDamage(attackDamage);
-        }
     }
 
-    bool IsGroundAhead()
-    {
-        float offset = 0.3f;
-
-        Vector2 dir = facingLeft ? Vector2.left : Vector2.right;
-
-        Vector2 origin1 = checkPoint.position;
-        Vector2 origin2 = checkPoint.position + (Vector3)(dir * offset);
-        Vector2 origin3 = checkPoint.position + (Vector3)(dir * offset * 2);
-
-        RaycastHit2D hit1 = Physics2D.Raycast(origin1, Vector2.down, groundDistance, groundLayer);
-        RaycastHit2D hit2 = Physics2D.Raycast(origin2, Vector2.down, groundDistance, groundLayer);
-        RaycastHit2D hit3 = Physics2D.Raycast(origin3, Vector2.down, groundDistance, groundLayer);
-
-        Debug.DrawRay(origin1, Vector2.down * groundDistance, Color.red);
-        Debug.DrawRay(origin2, Vector2.down * groundDistance, Color.yellow);
-        Debug.DrawRay(origin3, Vector2.down * groundDistance, Color.blue);
-
-        return hit1.collider != null && hit2.collider != null && hit3.collider != null;
-    }
-
-    bool IsWallAhead()
-    {
-        Vector2 direction = facingLeft ? Vector2.left : Vector2.right;
-
-        RaycastHit2D hit = Physics2D.Raycast(
-            wallCheck.position,
-            direction,
-            wallDistance,
-            wallLayer
-        );
-
-        Debug.DrawRay(wallCheck.position, direction * wallDistance, Color.yellow);
-
-        return hit.collider != null;
-    }
+    // ===================== FLIP =====================
 
     void FlipToPlayer()
     {
-        if (player.position.x < transform.position.x && !facingLeft)
-            Flip();
-
-        if (player.position.x > transform.position.x && facingLeft)
-            Flip();
+        if (player.position.x < transform.position.x)
+            FaceLeft();
+        else if (player.position.x > transform.position.x)
+            FaceRight();
     }
 
     void Flip()
     {
-        facingLeft = !facingLeft;
-
-        Vector3 scale = transform.localScale;
-        scale.x *= -1;
-        transform.localScale = scale;
+        if (facingLeft) FaceRight();
+        else FaceLeft();
     }
+
+    void FaceLeft()
+    {
+        transform.eulerAngles = new Vector3(0, 00, 0);
+        facingLeft = true;
+    }
+
+    void FaceRight()
+    {
+        transform.eulerAngles = new Vector3(0, 180, 0);
+        facingLeft = false;
+    }
+
+    // ===================== UTILS =====================
+
+    bool IsGroundAhead()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(
+            checkPoint.position,
+            Vector2.down,
+            distance,
+            layerMask
+        );
+        return hit.collider != null;
+    }
+
+    // ===================== COMBAT =====================
+
+    void Attack()
+    {
+        isAttacking = true;
+        lastAttackTime = Time.time;
+
+        animator.SetBool("Attack", true);
+
+        Invoke(nameof(DealDamage), 0.5f);
+        Invoke(nameof(EndAttack), 1f);
+    }
+
+    void DealDamage()
+    {
+        if (isDead || player == null) return;
+
+        if (Vector2.Distance(transform.position, player.position) <= retreatDistance * 1.3f)
+        {
+            HeroKnight p = player.GetComponent<HeroKnight>();
+            if (p != null) p.TakeDamage(attackDamage);
+        }
+    }
+
+    void EndAttack()
+    {
+        isAttacking = false;
+        animator.SetBool("Attack", false);
+    }
+
+    // ===================== TAKE DAMAGE =====================
 
     public void TakeDamage(int damage)
     {
@@ -210,7 +191,11 @@ public class PatrolEnemy : MonoBehaviour
 
         currentHealth -= damage;
 
-        animator.SetTrigger(Hurt);
+        if (animator != null)
+            animator.SetTrigger("Hurt");
+
+        if (healthBar != null)
+            healthBar.SetHealth(currentHealth, maxHealth);
 
         if (currentHealth <= 0)
             Die();
@@ -220,15 +205,21 @@ public class PatrolEnemy : MonoBehaviour
     {
         isDead = true;
 
-        rb.linearVelocity = Vector2.zero;
-        rb.gravityScale = 0;
+        animator.SetBool("Attack", false);
 
-        col.enabled = false;
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.gravityScale = 0;
+        }
 
-        animator.SetTrigger(Death);
+        if (col != null)
+            col.enabled = false;
+
+        if (animator != null)
+            animator.SetTrigger("Death");
 
         DropGold();
-
         Destroy(gameObject, 2f);
     }
 
@@ -238,50 +229,31 @@ public class PatrolEnemy : MonoBehaviour
 
         for (int i = 0; i < goldDropAmount; i++)
         {
-            Vector2 offset = new Vector2(
+            Vector2 randomOffset = new Vector2(
                 Random.Range(-0.5f, 0.5f),
-                Random.Range(0, 0.5f)
+                Random.Range(0f, 0.5f)
             );
-
-            Instantiate(
-                coinPrefab,
-                (Vector2)transform.position + offset,
-                Quaternion.identity
-            );
+            Instantiate(coinPrefab, (Vector2)transform.position + randomOffset, Quaternion.identity);
         }
     }
 
-    bool DetectHero()
-    {
-        Vector2 dir = facingLeft ? Vector2.left : Vector2.right;
-
-        Vector2 origin1 = wallCheck.position;
-        Vector2 origin2 = wallCheck.position + Vector3.up * 0.5f;
-
-        RaycastHit2D hit1 = Physics2D.Raycast(origin1, dir, detectRange, heroLayer);
-        RaycastHit2D hit2 = Physics2D.Raycast(origin2, dir, detectRange, heroLayer);
-
-        Debug.DrawRay(origin1, dir * detectRange, Color.green);
-        Debug.DrawRay(origin2, dir * detectRange, Color.cyan);
-
-        return hit1.collider != null || hit2.collider != null;
-    }
+    // ===================== GIZMOS =====================
 
     void OnDrawGizmosSelected()
     {
         if (checkPoint != null)
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawRay(checkPoint.position, Vector2.down * groundDistance);
+            Gizmos.DrawRay(checkPoint.position, Vector2.down * distance);
         }
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
 
         if (attackPoint != null)
         {
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(attackPoint.position, attackRadius);
         }
-
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, detectRange);
     }
 }

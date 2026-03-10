@@ -2,28 +2,25 @@
 
 public class SkeletonEnemy : MonoBehaviour
 {
-    public enum EnemyState
-    {
-        Patrol,
-        Chase,
-        Attack,
-        Dead
-    }
-
     [Header("Stats")]
     public int maxHealth = 5;
     public float moveSpeed = 2f;
     public float chaseSpeed = 4f;
 
+    [Header("Drop Settings")]
+    public GameObject coinPrefab;
+    public int goldDropAmount = 3;
+
     [Header("Detection")]
     public Transform player;
-    public float detectRange = 10f;
-    public float attackRange = 2.5f;
+    public float attackRange = 10f;
+    public float retreatDistance = 2.5f;
+    public bool inRange;
 
     [Header("Ground Check")]
     public Transform checkPoint;
-    public float groundDistance = 1f;
-    public LayerMask groundLayer;
+    public float distance = 1f;
+    public LayerMask layerMask;
 
     [Header("Attack")]
     public Transform attackPoint;
@@ -32,96 +29,81 @@ public class SkeletonEnemy : MonoBehaviour
     public float attackCooldown = 1.5f;
     public int attackDamage = 3;
 
-    [Header("Drop")]
-    public GameObject coinPrefab;
-    public int goldDropAmount = 3;
-
-    [Header("Animation")]
+    [Header("State")]
+    public bool facingLeft = true;
     public Animator animator;
 
-    private EnemyState currentState;
+    [Header("UI")]
+    public EnemyHealthBar healthBar;
 
+    private float lastAttackTime;
+    private bool isAttacking = false;
+    private bool isDead = false;
+    private int currentHealth;
     private Rigidbody2D rb;
     private Collider2D col;
 
-    private int currentHealth;
-    private bool facingLeft = true;
-
-    private float attackTimer;
-
     void Start()
     {
+        currentHealth = maxHealth;
         rb = GetComponent<Rigidbody2D>();
         col = GetComponent<Collider2D>();
-
-        currentHealth = maxHealth;
-        currentState = EnemyState.Patrol;
+        FaceLeft();
     }
 
     void Update()
     {
-        if (currentState == EnemyState.Dead) return;
+        if (isDead) return;
 
-        attackTimer += Time.deltaTime;
+        UpdateRangeState();
 
-        float distance = Vector2.Distance(transform.position, player.position);
+        if (inRange)
+            HandleChaseAndAttack();
+        else
+            Patrol();
+    }
 
-        switch (currentState)
+    // ===================== STATES =====================
+
+    void UpdateRangeState()
+    {
+        inRange = Vector2.Distance(transform.position, player.position) < attackRange;
+    }
+
+    void HandleChaseAndAttack()
+    {
+        FlipToPlayer();
+
+        float distanceToPlayer = Vector2.Distance(transform.position, player.position);
+
+        if (distanceToPlayer > retreatDistance)
         {
-            case EnemyState.Patrol:
-                Patrol();
-
-                if (distance < detectRange)
-                    currentState = EnemyState.Chase;
-                break;
-
-            case EnemyState.Chase:
-                ChasePlayer();
-
-                if (distance < attackRange)
-                    currentState = EnemyState.Attack;
-
-                if (distance > detectRange)
-                    currentState = EnemyState.Patrol;
-                break;
-
-            case EnemyState.Attack:
+            ChasePlayer();
+        }
+        else
+        {
+            if (Time.time >= lastAttackTime + attackCooldown && !isAttacking)
                 Attack();
-
-                if (distance > attackRange)
-                    currentState = EnemyState.Chase;
-                break;
         }
     }
 
-    // ================= PATROL =================
-
     void Patrol()
     {
-        animator.SetBool("isMoving", true);
-
-        float direction = facingLeft ? -1 : 1;
-
-        rb.linearVelocity = new Vector2(direction * moveSpeed, rb.linearVelocity.y);
+        animator.SetBool("Attack 1", false);
+        transform.Translate(Vector2.right * moveSpeed * Time.deltaTime);
 
         if (!IsGroundAhead())
-        {
             Flip();
-            return;
-        }   
     }
 
-    // ================= CHASE =================
+    // ===================== MOVEMENT =====================
 
     void ChasePlayer()
     {
         animator.SetBool("Attack 1", false);
 
         if (!IsGroundAhead())
-        {
-            Flip();
             return;
-        }
 
         transform.position = Vector2.MoveTowards(
             transform.position,
@@ -130,79 +112,90 @@ public class SkeletonEnemy : MonoBehaviour
         );
     }
 
-    // ================= ATTACK =================
-
-    void Attack()
-    {
-        rb.linearVelocity = Vector2.zero;
-
-        FlipToPlayer();
-
-        if (attackTimer >= attackCooldown)
-        {
-            animator.SetTrigger("attack");
-
-            Collider2D hit = Physics2D.OverlapCircle(
-                attackPoint.position,
-                attackRadius,
-                attackLayer
-            );
-
-            if (hit != null)
-            {
-                HeroKnight hero = hit.GetComponent<HeroKnight>();
-
-                if (hero != null)
-                    hero.TakeDamage(attackDamage);
-            }
-
-            attackTimer = 0f;
-        }
-    }
-
-    // ================= FLIP =================
+    // ===================== FLIP =====================
 
     void FlipToPlayer()
     {
-        if (player.position.x < transform.position.x && !facingLeft)
-            Flip();
-
-        if (player.position.x > transform.position.x && facingLeft)
-            Flip();
+        if (player.position.x < transform.position.x)
+            FaceLeft();
+        else if (player.position.x > transform.position.x)
+            FaceRight();
     }
 
     void Flip()
     {
-        facingLeft = !facingLeft;
-
-        Vector3 scale = transform.localScale;
-        scale.x *= -1;
-        transform.localScale = scale;
+        if (facingLeft) FaceRight();
+        else FaceLeft();
     }
 
-    // ================= GROUND =================
+    void FaceLeft()
+    {
+        transform.eulerAngles = new Vector3(0, 180, 0);
+        facingLeft = true;
+    }
+
+    void FaceRight()
+    {
+        transform.eulerAngles = new Vector3(0, 0, 0);
+        facingLeft = false;
+    }
+
+    // ===================== UTILS =====================
 
     bool IsGroundAhead()
     {
         RaycastHit2D hit = Physics2D.Raycast(
             checkPoint.position,
             Vector2.down,
-            groundDistance,
-            groundLayer
+            distance,
+            layerMask
         );
-
         return hit.collider != null;
     }
 
-    // ================= DAMAGE =================
+    // ===================== COMBAT =====================
+
+    void Attack()
+    {
+        isAttacking = true;
+        lastAttackTime = Time.time;
+
+        animator.SetBool("Attack 1", true);
+
+        Invoke(nameof(DealDamage), 0.5f);
+        Invoke(nameof(EndAttack), 1f);
+    }
+
+    void DealDamage()
+    {
+        if (isDead || player == null) return;
+
+        if (Vector2.Distance(transform.position, player.position) <= retreatDistance * 1.3f)
+        {
+            HeroKnight p = player.GetComponent<HeroKnight>();
+            if (p != null) p.TakeDamage(attackDamage);
+        }
+    }
+
+    void EndAttack()
+    {
+        isAttacking = false;
+        animator.SetBool("Attack 1", false);
+    }
+
+    // ===================== TAKE DAMAGE =====================
 
     public void TakeDamage(int damage)
     {
-        if (currentState == EnemyState.Dead) return;
+        if (isDead) return;
 
         currentHealth -= damage;
 
-        animator.SetTrigger("hurt");
+        if (animator != null)
+            animator.SetTrigger("Hurt");
+
+        if (healthBar != null)
+            healthBar.SetHealth(currentHealth, maxHealth);
 
         if (currentHealth <= 0)
             Die();
@@ -210,21 +203,25 @@ public class SkeletonEnemy : MonoBehaviour
 
     void Die()
     {
-        currentState = EnemyState.Dead;
+        isDead = true;
 
-        rb.linearVelocity = Vector2.zero;
-        rb.gravityScale = 0;
+        animator.SetBool("Attack 1", false);
 
-        col.enabled = false;
+        if (rb != null)
+        {
+            rb.linearVelocity = Vector2.zero;
+            rb.gravityScale = 0;
+        }
 
-        animator.SetTrigger("death");
+        if (col != null)
+            col.enabled = false;
+
+        if (animator != null)
+            animator.SetTrigger("Death");
 
         DropGold();
-
         Destroy(gameObject, 2f);
     }
-
-    // ================= DROP =================
 
     void DropGold()
     {
@@ -232,36 +229,31 @@ public class SkeletonEnemy : MonoBehaviour
 
         for (int i = 0; i < goldDropAmount; i++)
         {
-            Vector2 offset = new Vector2(
+            Vector2 randomOffset = new Vector2(
                 Random.Range(-0.5f, 0.5f),
                 Random.Range(0f, 0.5f)
             );
-
-            Instantiate(
-                coinPrefab,
-                (Vector2)transform.position + offset,
-                Quaternion.identity
-            );
+            Instantiate(coinPrefab, (Vector2)transform.position + randomOffset, Quaternion.identity);
         }
     }
 
-    // ================= DEBUG =================
+    // ===================== GIZMOS =====================
 
     void OnDrawGizmosSelected()
     {
         if (checkPoint != null)
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawRay(checkPoint.position, Vector2.down * groundDistance);
+            Gizmos.DrawRay(checkPoint.position, Vector2.down * distance);
         }
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
 
         if (attackPoint != null)
         {
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(attackPoint.position, attackRadius);
         }
-
-        Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, detectRange);
     }
 }

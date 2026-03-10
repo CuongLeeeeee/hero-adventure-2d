@@ -8,14 +8,14 @@ public class NPCShopController : MonoBehaviour
 {
     [Header("UI Settings")]
     public Text notifyText;
-    public float notifyDuration = 2.0f; 
-    private string selectedItemName = ""; 
+    public float notifyDuration = 2.0f;
+    private string selectedItemName = "";
 
-    public GameObject[] highlightFrames; 
-    public TextMeshProUGUI goldDisplayText; 
+    public GameObject[] highlightFrames;
+    public TextMeshProUGUI goldDisplayText;
     public GameObject shopPanel;
-    private bool isNearNPC = false; 
-    private int selectedPrice = 0; 
+    private bool isNearNPC = false;
+    private int selectedPrice = 0;
     public GameObject goldUI;
     void Start()
     {
@@ -29,7 +29,7 @@ public class NPCShopController : MonoBehaviour
             ToggleShop();
         }
     }
-
+    //real
     public void ToggleShop()
     {
         notifyText.text = ""; // Xóa thông báo cũ
@@ -38,20 +38,20 @@ public class NPCShopController : MonoBehaviour
         if (shopPanel == null) return;
         bool isActive = !shopPanel.activeSelf;
 
-        shopPanel.SetActive(isActive); 
+        shopPanel.SetActive(isActive);
 
-       
+
         if (goldUI != null)
         {
             goldUI.SetActive(isActive);
         }
 
-       
+
         if (isActive)
         {
-            Time.timeScale = 0f;
+            //Time.timeScale = 0f;
             Cursor.visible = true;
-           
+
             GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
             if (playerObj != null)
             {
@@ -114,7 +114,7 @@ public class NPCShopController : MonoBehaviour
 
     public void ShowNotify(string message)
     {
-        StopAllCoroutines(); 
+        StopAllCoroutines();
         StartCoroutine(NotifyRoutine(message));
     }
 
@@ -125,11 +125,11 @@ public class NPCShopController : MonoBehaviour
 
         yield return new WaitForSeconds(notifyDuration);
 
-        notifyText.gameObject.SetActive(false); 
+        notifyText.gameObject.SetActive(false);
     }
 
 
-    public GameObject[] selectionGlows; 
+    public GameObject[] selectionGlows;
 
     public void SelectItem1() { SelectItem(10, 0, "Thuốc hồi máu"); }
     public void SelectItem2() { SelectItem(5, 1, "Thuốc stamina"); }

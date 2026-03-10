@@ -8,7 +8,6 @@ using UnityEngine.SceneManagement;
 public class HeroKnight : MonoBehaviour
 {
 
-
     [SerializeField] float m_speed = 4.0f;
     [SerializeField] float m_jumpForce = 7.5f;
     [SerializeField] float m_rollForce = 6.0f;
@@ -23,8 +22,13 @@ public class HeroKnight : MonoBehaviour
     [SerializeField] float m_attackRange = 0.8f;
     [SerializeField] Vector2 m_attackOffset = new Vector2(1.0f, 0.2f);
     [SerializeField] LayerMask m_enemyLayer; // set Enemy layer trong Inspector
+    [SerializeField] float attackCooldown = 0.6f;
+    [SerializeField] float rollCooldown = 2.0f;
     GameManager gameManager;
 
+    public GameObject dartPrefab; // Kéo Prefab phi tiêu vào đây trong Inspector
+    private float nextFireTime = 0f; // Thời điểm được phép bắn tiếp theo
+    public float fireRate = 1f; // Khoảng thời gian chờ (1 giây)
 
     //Phi tiêu
     [Header("Ranged Combat")]
@@ -48,8 +52,13 @@ public class HeroKnight : MonoBehaviour
     private float m_delayToIdle = 0.0f;
     private float m_rollDuration = 8.0f / 14.0f;
     private float m_rollCurrentTime;
+    float lastAttackTime = -10f;
+    float lastRollTime = -10f;
     public Image healthBar;
     private bool isDead = false;
+
+    private float m_nextDartTime = 0f;
+    public float m_dartCooldown = 1.0f;
 
 
     void Start()
@@ -76,13 +85,15 @@ public class HeroKnight : MonoBehaviour
     void Update()
     {
         if (isDead) return;
-        m_timeSinceAttack += Time.deltaTime;
 
+        // --- 1. CẬP NHẬT THỜI GIAN & TRẠNG THÁI ---
+        m_timeSinceAttack += Time.deltaTime;
         if (m_rolling)
             m_rollCurrentTime += Time.deltaTime;
         if (m_rollCurrentTime > m_rollDuration)
             m_rolling = false;
 
+        // --- 2. KIỂM TRA GROUNDED ---
         if (!m_grounded && m_groundSensor.State())
         {
             m_grounded = true;
@@ -94,18 +105,15 @@ public class HeroKnight : MonoBehaviour
             m_animator.SetBool("Grounded", m_grounded);
         }
 
+        // --- 3. DI CHUYỂN & LẬT MẶT ---
         float inputX = Input.GetAxis("Horizontal");
- 
-
         if (inputX > 0)
         {
-            // Lật sang phải bằng cách gán Scale.X = 1
             transform.localScale = new Vector3(1f, transform.localScale.y, 1f);
             m_facingDirection = 1;
         }
         else if (inputX < 0)
         {
-            // Lật sang trái bằng cách gán Scale.X = -1
             transform.localScale = new Vector3(-1f, transform.localScale.y, 1f);
             m_facingDirection = -1;
         }
@@ -115,49 +123,49 @@ public class HeroKnight : MonoBehaviour
 
         m_animator.SetFloat("AirSpeedY", m_body2d.linearVelocity.y);
 
-        m_isWallSliding = (m_wallSensorR1.State() && m_wallSensorR2.State()) || (m_wallSensorL1.State() && m_wallSensorL2.State());
-        m_animator.SetBool("WallSlide", m_isWallSliding);
+        // --- 4. CÁC HÀNH ĐỘNG CHIẾN ĐẤU (TÁCH BIỆT CÁC IF ĐỂ KHÔNG CHẶN NHAU) ---
 
-        if (Input.GetKeyDown("e") && !m_rolling)
-        {
-            m_animator.SetBool("noBlood", m_noBlood);
-            m_animator.SetTrigger("Death");
-        }
-        else if (Input.GetKeyDown("q") && !m_rolling)
-            m_animator.SetTrigger("Hurt");
-
-        // Attack
-        else if (Input.GetMouseButtonDown(0) && m_timeSinceAttack > 0.25f && !m_rolling)
+        // Tấn công bằng chuột trái
+        if (Input.GetMouseButtonDown(0) && m_timeSinceAttack > attackCooldown && !m_rolling)
         {
             m_currentAttack++;
-
-            if (m_currentAttack > 3)
-                m_currentAttack = 1;
-
-            if (m_timeSinceAttack > 1.0f)
-                m_currentAttack = 1;
+            if (m_currentAttack > 3) m_currentAttack = 1;
+            if (m_timeSinceAttack > 1.0f) m_currentAttack = 1;
 
             m_animator.SetTrigger("Attack" + m_currentAttack);
             m_timeSinceAttack = 0.0f;
         }
 
-        else if (Input.GetMouseButtonDown(1) && !m_rolling)
+        // Đỡ đòn bằng chuột phải
+        if (Input.GetMouseButtonDown(1) && !m_rolling)
         {
             m_animator.SetTrigger("Block");
             m_animator.SetBool("IdleBlock", true);
         }
         else if (Input.GetMouseButtonUp(1))
-            m_animator.SetBool("IdleBlock", false);
-
-        else if (Input.GetKeyDown(KeyCode.LeftShift) && !m_rolling && !m_isWallSliding)
         {
+            m_animator.SetBool("IdleBlock", false);
+        }
+
+        // Phóng phi tiêu bằng phím S (ĐÃ THÊM COOLDOWN 1s)
+        if (Input.GetKeyDown(KeyCode.S) && m_dartCount > 0 && !m_rolling && Time.time >= m_nextDartTime)
+        {
+            LaunchDart();
+            m_nextDartTime = Time.time + m_dartCooldown; // Thiết lập mốc 1 giây sau mới được bắn tiếp
+        }
+
+        // Lăn (Roll)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time >= lastRollTime +rollCooldown && !m_rolling && !m_isWallSliding)
+        {
+            lastRollTime = Time.time;
             m_rolling = true;
             m_rollCurrentTime = 0f;
             m_animator.SetTrigger("Roll");
             m_body2d.linearVelocity = new Vector2(m_facingDirection * m_rollForce, m_body2d.linearVelocity.y);
         }
 
-        else if (Input.GetKeyDown(KeyCode.Space) && m_grounded && !m_rolling)
+        // Nhảy (Jump)
+        if (Input.GetKeyDown(KeyCode.Space) && m_grounded && !m_rolling)
         {
             m_animator.SetTrigger("Jump");
             m_grounded = false;
@@ -166,7 +174,8 @@ public class HeroKnight : MonoBehaviour
             m_groundSensor.Disable(0.2f);
         }
 
-        else if (Mathf.Abs(inputX) > Mathf.Epsilon)
+        // --- 5. ANIMATION IDLE/RUN ---
+        if (Mathf.Abs(inputX) > Mathf.Epsilon)
         {
             m_delayToIdle = 0.05f;
             m_animator.SetInteger("AnimState", 1);
@@ -176,13 +185,6 @@ public class HeroKnight : MonoBehaviour
             m_delayToIdle -= Time.deltaTime;
             if (m_delayToIdle < 0)
                 m_animator.SetInteger("AnimState", 0);
-        }
-
-
-        // Phóng phi tiêu bằng phím S
-        if (Input.GetKeyDown(KeyCode.S) && m_dartCount > 0 && !m_rolling)
-        {
-            LaunchDart();
         }
     }
 
@@ -224,6 +226,11 @@ public class HeroKnight : MonoBehaviour
             h.GetComponent<GolemEnemy>()?.TakeDamage(m_attackDamage);
             h.GetComponent<BatEnemy>()?.TakeDamage(m_attackDamage);
             h.GetComponent<SkeletonEnemy>()?.TakeDamage(m_attackDamage);
+            h.GetComponent<PatrolEnemy>()?.TakeDamage(m_attackDamage);
+            h.GetComponent<Crab>()?.TakeDamage(m_attackDamage);
+            h.GetComponent<Slime>()?.TakeDamage(m_attackDamage);
+            h.GetComponent<Rat>()?.TakeDamage(m_attackDamage);
+            h.GetComponent<Bat>()?.TakeDamage(m_attackDamage);
             h.GetComponent<FireDemon>()?.TakeDamage(m_attackDamage);
         }
     }
@@ -249,10 +256,8 @@ public class HeroKnight : MonoBehaviour
         if (currentHealth <= 0) return; // Sửa từ maxHealth thành currentHealth
 
         currentHealth -= damage; // Sửa từ maxHealth -= damage
-        Debug.Log("Hero Health: " + currentHealth);
         healthBar.fillAmount = (float)currentHealth / maxHealth;
-        if (currentHealth <= 0) return;  
-        
+        Debug.Log("Hero Health: " + currentHealth);
 
         if (currentHealth <= 0)
         {
