@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        fadeScreen.color = new Color(0, 0, 0, 0);
+        fadeScreen.gameObject.SetActive(false);
         youDiedText.gameObject.SetActive(false);
     }
 
@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
     {
         isGameOver = true;
 
-        fadeScreen.color = new Color(0, 0, 0, 0.7f);
+        fadeScreen.gameObject.SetActive(true);
 
         youDiedText.gameObject.SetActive(true);
         youDiedText.text = "YOU DIED\nPress F to Restart";
