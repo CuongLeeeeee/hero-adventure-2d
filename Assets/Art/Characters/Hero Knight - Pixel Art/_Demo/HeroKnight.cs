@@ -155,8 +155,9 @@ public class HeroKnight : MonoBehaviour
         }
 
         // Lăn (Roll)
-        if (Input.GetKeyDown(KeyCode.LeftShift) && !m_rolling && !m_isWallSliding)
+        if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time >= lastRollTime +rollCooldown && !m_rolling && !m_isWallSliding)
         {
+            lastRollTime = Time.time;
             m_rolling = true;
             m_rollCurrentTime = 0f;
             m_animator.SetTrigger("Roll");

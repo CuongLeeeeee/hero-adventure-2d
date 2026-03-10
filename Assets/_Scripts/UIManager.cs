@@ -131,7 +131,7 @@ public class UIManager : MonoBehaviour
                         }
 
                         // Load Scene *******************************************
-                        SceneManager.LoadScene("PlayerScene");
+                        SceneManager.LoadScene("MapScene");
                     }
                     else
                     {
