@@ -4,18 +4,22 @@ using UnityEngine;
 public class Bat : MonoBehaviour
 {
     [Header("Patrol Settings")]
-    public float patrolRadius = 4f;         // Bán kính vòng tròn bay
+    public float patrolRadius = 2f;         // Bán kính vòng tròn bay
     public float patrolSpeed = 2f;         // Tốc độ bay tuần tra
     public bool clockwise = true;       // Chiều bay
 
     [Header("Detection Settings")]
-    public float detectionRange = 5f;
+    public float detectionRange = 2f;
     public float attackRange = 1.0f;
 
     [Header("Combat Settings")]
     public float attackCooldown = 1.5f;
-    public int maxHealth = 60;
-    public int attackDamage = 10;
+    public int maxHealth = 40;
+    public int attackDamage = 8;
+
+    [Header("Drop Settings")]
+    public GameObject coinPrefab;
+    public int goldDropAmount = 2;
 
     [Header("UI")]
     public EnemyHealthBar healthBar;
@@ -199,7 +203,20 @@ public class Bat : MonoBehaviour
                 ph.TakeDamage(damage);
         }
     }
+    void DropGold()
+    {
+        if (coinPrefab == null) return;
 
+        for (int i = 0; i < goldDropAmount; i++)
+        {
+            Vector2 randomOffset = new Vector2(
+                Random.Range(-0.5f, 0.5f),
+                Random.Range(0f, 0.5f)
+            );
+
+            Instantiate(coinPrefab, (Vector2)transform.position + randomOffset, Quaternion.identity);
+        }
+    }
     // ─────────────────────────────────────────────
     //  TAKE DAMAGE / DEATH
     // ─────────────────────────────────────────────
@@ -235,7 +252,7 @@ public class Bat : MonoBehaviour
         if (rb != null) rb.linearVelocity = Vector2.zero;
 
         animator.SetTrigger(AnimDeath);
-
+        DropGold();
         var col = GetComponent<Collider2D>();
         if (col) col.enabled = false;
 

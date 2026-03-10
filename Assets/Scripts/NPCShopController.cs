@@ -32,7 +32,7 @@ public class NPCShopController : MonoBehaviour
     //real
     public void ToggleShop()
     {
-        notifyText.text = ""; // Xóa thông báo cũ
+        notifyText.text = "";
         notifyText.gameObject.SetActive(false);
 
         if (shopPanel == null) return;
@@ -49,7 +49,6 @@ public class NPCShopController : MonoBehaviour
 
         if (isActive)
         {
-            //Time.timeScale = 0f;
             Cursor.visible = true;
 
             GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
@@ -97,18 +96,18 @@ public class NPCShopController : MonoBehaviour
     {
         int price = 0;
 
-        if (itemName == "Mau") price = 10;
-        else if (itemName == "Stamina") price = 5;
-        else if (itemName == "PhiTieu") price = 8;
+        if (itemName == "Health Potion") price = 100;
+        else if (itemName == "Damage Potion") price = 80;
+        else if (itemName == "Dart") price = 50;
 
         HeroKnight player = FindFirstObjectByType<HeroKnight>();
         if (player != null && player.SpendGold(price))
         {
-            ShowNotify("Đã mua " + itemName + " thành công!");
+            ShowNotify("Purchased " + itemName + " successfully!");
         }
         else
         {
-            ShowNotify("Không đủ vàng để mua " + itemName + "!");
+            ShowNotify("Not enough gold to buy " + itemName + "!");
         }
     }
 
@@ -131,9 +130,9 @@ public class NPCShopController : MonoBehaviour
 
     public GameObject[] selectionGlows;
 
-    public void SelectItem1() { SelectItem(10, 0, "Thuốc hồi máu"); }
-    public void SelectItem2() { SelectItem(5, 1, "Thuốc stamina"); }
-    public void SelectItem3() { SelectItem(8, 2, "Phi tiêu"); }
+    public void SelectItem1() { SelectItem(10, 0, "Health Potion"); }
+    public void SelectItem2() { SelectItem(20, 1, "Damage Potion"); }
+    public void SelectItem3() { SelectItem(30, 2, "Dart"); }
 
     private void SelectItem(int price, int index, string name)
     {
@@ -157,7 +156,7 @@ public class NPCShopController : MonoBehaviour
     {
         if (selectedPrice == 0 || string.IsNullOrEmpty(selectedItemName))
         {
-            ShowNotify("Vui lòng chọn vật phẩm!");
+            ShowNotify("Please select an item!");
             return;
         }
 
@@ -166,11 +165,11 @@ public class NPCShopController : MonoBehaviour
         {
             HeroKnight playerScript = playerObj.GetComponent<HeroKnight>();
 
-            if (selectedItemName == "Thuốc hồi máu")
+            if (selectedItemName == "Health Potion")
             {
                 if (playerScript.currentHealth >= 100)
                 {
-                    ShowNotify("Máu đang đầy, không thể mua!");
+                    ShowNotify("HP is full, cannot purchase!");
                 }
             }
 
@@ -180,15 +179,15 @@ public class NPCShopController : MonoBehaviour
                 ApplyItemEffect(playerScript, selectedItemName);
 
                 UpdateGoldDisplay(playerScript.m_gold);
-                if (selectedItemName == "Phi tiêu" && GameHUDManager.Instance != null)
+                if (selectedItemName == "Dart" && GameHUDManager.Instance != null)
                 {
                     GameHUDManager.Instance.UpdateDartCount(playerScript.m_dartCount);
                 }
-                ShowNotify("Mua " + selectedItemName + " thành công!");
+                ShowNotify("Purchased " + selectedItemName + " successfully!");
             }
             else
             {
-                ShowNotify("Bạn không đủ vàng!");
+                ShowNotify("Not enough gold!");
             }
         }
     }
@@ -197,14 +196,14 @@ public class NPCShopController : MonoBehaviour
     {
         switch (itemName)
         {
-            case "Thuốc hồi máu":
-                player.RestoreFullHealth();
+            case "Health Potion":
+                player.RestoreHealth(10);
                 break;
-            case "Thuốc stamina":
+            case "Damage Potion":
                 player.IncreaseDamage(1);
                 break;
-            case "Phi tiêu":
-                player.AddDarts(10);
+            case "Dart":
+                player.AddDarts(5);
                 break;
         }
     }
@@ -213,7 +212,7 @@ public class NPCShopController : MonoBehaviour
     {
         if (goldDisplayText != null)
         {
-            goldDisplayText.text = "Vàng hiện có : " + currentGold;
+            goldDisplayText.text = "Current Gold: " + currentGold;
         }
     }
 }

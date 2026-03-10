@@ -3,13 +3,13 @@
 public class FireDemon : MonoBehaviour
 {
     [Header("Stats")]
-    public int maxHealth = 5;
-    public float moveSpeed = 2f;
+    public int maxHealth = 500;
+    public float moveSpeed = 3f;
     public float chaseSpeed = 4f;
 
     [Header("Drop Settings")]
     public GameObject coinPrefab;
-    public int goldDropAmount = 3;
+    public int goldDropAmount = 1;
 
     [Header("Detection")]
     public Transform player;
@@ -25,8 +25,8 @@ public class FireDemon : MonoBehaviour
     [Header("Attack")]
     public float attackCooldown = 1.5f;
     public int attackDamage = 5;
-    public int cleaveDamage = 10;
-    private int attackCount = 0;
+    public int cleaveDamage = 36;
+    private int attackCount = 60;
 
     [Header("State")]
     public bool facingLeft = false;

@@ -8,16 +8,16 @@ using UnityEngine.SceneManagement;
 public class HeroKnight : MonoBehaviour
 {
 
-    [SerializeField] float m_speed = 4.0f;
-    [SerializeField] float m_jumpForce = 7.5f;
-    [SerializeField] float m_rollForce = 6.0f;
+    [SerializeField] float m_speed = 6f;
+    [SerializeField] float m_jumpForce = 13f;
+    [SerializeField] float m_rollForce = 13f;
     [SerializeField] bool m_noBlood = false;
     [SerializeField] GameObject m_slideDust;
     [SerializeField] public int m_gold = 0;
-    [SerializeField] int maxHealth = 100;
+    [SerializeField] int maxHealth = 150;
     [SerializeField] public int currentHealth;
     [Header("Combat")]
-    [SerializeField] public int m_attackDamage = 1;
+    [SerializeField] public int m_attackDamage = 15;
     [SerializeField] public int m_dartBonusDamage = 0;   // Damage cộng thêm cho phi tiêu
     [SerializeField] float m_attackRange = 0.8f;
     [SerializeField] Vector2 m_attackOffset = new Vector2(1.0f, 0.2f);
@@ -296,11 +296,11 @@ public class HeroKnight : MonoBehaviour
         Gizmos.DrawWireSphere(center, m_attackRange);
     }
 
-    public void RestoreFullHealth()
+    public void RestoreHealth(int health)
     {
-        currentHealth = maxHealth;
+        currentHealth += health;
         healthBar.fillAmount = (float)currentHealth / maxHealth;
-        Debug.Log("Đã hồi đầy máu!");
+        Debug.Log("Đã hồi 5 hp");
     }
 
     public bool IsHealthFull()

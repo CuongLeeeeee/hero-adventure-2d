@@ -4,24 +4,24 @@ public class GolemEnemy : MonoBehaviour
 {
     [Header("Drop Settings")]
     public GameObject coinPrefab;
-    public int goldDropAmount = 5;
+    public int goldDropAmount = 8;
 
     [Header("Movement")]
-    public float walkSpeed = 1.5f;
+    public float walkSpeed = 2f;
     public float patrolDistance = 4f;
-    public float chaseSpeed = 2.5f;
+    public float chaseSpeed = 3f;
 
     [Header("Combat")]
     public float detectRange = 4f;
     public float attackRange = 1.8f;
     public float attackCooldown = 2f;
     public int attackDamage = 2;
-    public int maxHealth = 5;
+    public int maxHealth = 100;
 
     [Header("Revive System")]
     public int reviveCount = 1;
     public float reviveDelay = 2f;
-    public int healthAfterRevive = 3;
+    public int healthAfterRevive = 50;
 
     [Header("Ground Check")]
     public LayerMask groundLayer;

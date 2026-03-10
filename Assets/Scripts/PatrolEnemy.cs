@@ -3,17 +3,17 @@
 public class PatrolEnemy : MonoBehaviour
 {
     [Header("Stats")]
-    public int maxHealth = 5;
-    public float moveSpeed = 2f;
+    public int maxHealth = 120;
+    public float moveSpeed = 2.5f;
     public float chaseSpeed = 4f;
 
     [Header("Drop Settings")]
     public GameObject coinPrefab;
-    public int goldDropAmount = 3;
+    public int goldDropAmount = 5;
 
     [Header("Detection")]
     public Transform player;
-    public float attackRange = 10f;
+    public float attackRange = 4f;
     public float retreatDistance = 2.5f;
     public bool inRange;
 
@@ -64,7 +64,20 @@ public class PatrolEnemy : MonoBehaviour
     }
 
     // ===================== STATES =====================
+    void DropGold()
+    {
+        if (coinPrefab == null) return;
 
+        for (int i = 0; i < goldDropAmount; i++)
+        {
+            Vector2 randomOffset = new Vector2(
+                Random.Range(-0.5f, 0.5f),
+                Random.Range(0f, 0.5f)
+            );
+
+            Instantiate(coinPrefab, (Vector2)transform.position + randomOffset, Quaternion.identity);
+        }
+    }
     void UpdateRangeState()
     {
         inRange = Vector2.Distance(transform.position, player.position) < attackRange;
@@ -218,24 +231,11 @@ public class PatrolEnemy : MonoBehaviour
 
         if (animator != null)
             animator.SetTrigger("Death");
-
         DropGold();
         Destroy(gameObject, 2f);
     }
 
-    void DropGold()
-    {
-        if (coinPrefab == null) return;
 
-        for (int i = 0; i < goldDropAmount; i++)
-        {
-            Vector2 randomOffset = new Vector2(
-                Random.Range(-0.5f, 0.5f),
-                Random.Range(0f, 0.5f)
-            );
-            Instantiate(coinPrefab, (Vector2)transform.position + randomOffset, Quaternion.identity);
-        }
-    }
 
     // ===================== GIZMOS =====================
 

@@ -9,7 +9,7 @@ public class SkeletonEnemy : MonoBehaviour
 
     [Header("Drop Settings")]
     public GameObject coinPrefab;
-    public int goldDropAmount = 3;
+    public int goldDropAmount = 1;
 
     [Header("Detection")]
     public Transform player;

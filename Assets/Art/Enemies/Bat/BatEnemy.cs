@@ -4,16 +4,16 @@ public class BatEnemy : MonoBehaviour
 {
     [Header("Drop Settings")]
     public GameObject coinPrefab;
-    public int goldDropAmount = 3;
+    public int goldDropAmount = 4;
 
     [Header("Movement")]
-    public float flySpeed = 2f;         
-    public float flyRadius = 2f;       
-    public float chaseSpeed = 3f;      
+    public float flySpeed = 1.5f;         
+    public float flyRadius = 1.6f;       
+    public float chaseSpeed = 2f;      
 
     [Header("Combat")]
-    public float detectRange = 5f;    
-    public float attackRange = 2f;      
+    public float detectRange = 3f;    
+    public float attackRange = 2.5f;      
     public float attackCooldown = 1.5f; 
     public int attackDamage = 1;       
     public int health = 2;              

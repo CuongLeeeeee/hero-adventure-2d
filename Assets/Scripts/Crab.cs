@@ -15,11 +15,15 @@ public class Crab : MonoBehaviour
     [Header("Combat Settings")]
     public float attackCooldown = 1.5f;
     public float abilityCooldown = 8f;
-    public int maxHealth = 100;
+    public int maxHealth = 60;
     public int attackDamage = 10;
-    public int attack2Damage = 15;
-    public int attack3Damage = 20;
-    public int abilityDamage = 30;
+    public int attack2Damage = 13;
+    public int attack3Damage = 15;
+    public int abilityDamage = 25;
+
+    [Header("Drop Settings")]
+    public GameObject coinPrefab;
+    public int goldDropAmount = 3;
 
     [Header("UI")]
     public EnemyHealthBar healthBar;
@@ -125,7 +129,20 @@ public class Crab : MonoBehaviour
             SetNewPatrolTarget();
         }
     }
+    void DropGold()
+    {
+        if (coinPrefab == null) return;
 
+        for (int i = 0; i < goldDropAmount; i++)
+        {
+            Vector2 randomOffset = new Vector2(
+                Random.Range(-0.5f, 0.5f),
+                Random.Range(0f, 0.5f)
+            );
+
+            Instantiate(coinPrefab, (Vector2)transform.position + randomOffset, Quaternion.identity);
+        }
+    }
     void StopPatrol()
     {
         if (patrolCoroutine != null)
@@ -286,7 +303,7 @@ public class Crab : MonoBehaviour
 
         rb.linearVelocity = Vector2.zero;
         animator.SetTrigger(AnimDeath);
-
+        DropGold();
         var col = GetComponent<Collider2D>();
         if (col) col.enabled = false;
 
