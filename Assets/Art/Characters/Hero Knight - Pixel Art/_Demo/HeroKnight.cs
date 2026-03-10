@@ -128,6 +128,7 @@ public class HeroKnight : MonoBehaviour
         // Tấn công bằng chuột trái
         if (Input.GetMouseButtonDown(0) && m_timeSinceAttack > attackCooldown && !m_rolling)
         {
+            AudioManager.instance.PlaySFX(AudioManager.instance.attack);
             m_currentAttack++;
             if (m_currentAttack > 3) m_currentAttack = 1;
             if (m_timeSinceAttack > 1.0f) m_currentAttack = 1;
@@ -220,7 +221,7 @@ public class HeroKnight : MonoBehaviour
     {
         Vector2 center = (Vector2)transform.position + new Vector2(m_attackOffset.x * m_facingDirection, m_attackOffset.y);
         Collider2D[] hits = Physics2D.OverlapCircleAll(center, m_attackRange, m_enemyLayer);
-
+       
         foreach (var h in hits)
         {
             h.GetComponent<GolemEnemy>()?.TakeDamage(m_attackDamage);
@@ -257,6 +258,7 @@ public class HeroKnight : MonoBehaviour
 
         currentHealth -= damage; // Sửa từ maxHealth -= damage
         healthBar.fillAmount = (float)currentHealth / maxHealth;
+        AudioManager.instance.PlaySFX(AudioManager.instance.hurt);
         Debug.Log("Hero Health: " + currentHealth);
 
         if (currentHealth <= 0)
@@ -264,6 +266,7 @@ public class HeroKnight : MonoBehaviour
             isDead = true;
             m_animator.SetTrigger("Death");
             gameManager.GameOver();
+            AudioManager.instance.PlaySFX(AudioManager.instance.dead);
         }
         else
         {
