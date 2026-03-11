@@ -5,33 +5,57 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
-    public Image fadeScreen;
-    public TextMeshProUGUI youDiedText;
+    public Image deadScreen;
+    public Image victorySceen;
+    public TextMeshProUGUI ScoreText;
 
     private bool isGameOver = false;
-
+    private bool isVictory = false;
     void Start()
     {
-        fadeScreen.gameObject.SetActive(false);
-        youDiedText.gameObject.SetActive(false);
+        if(deadScreen != null)
+        {
+            deadScreen.gameObject.SetActive(false);
+        }
+        if(victorySceen != null)
+        {
+            victorySceen.gameObject.SetActive(false);
+        }
+        ScoreText.gameObject.SetActive(false);
     }
 
     void Update()
     {
 
-        if (isGameOver && Input.GetKeyDown(KeyCode.F))
+        if (isGameOver && Input.GetKeyDown(KeyCode.F) || isVictory && Input.GetKeyDown(KeyCode.F))
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 
-    public void GameOver()
+    public void GameOver(int score)
     {
         isGameOver = true;
 
-        fadeScreen.gameObject.SetActive(true);
-
-        youDiedText.gameObject.SetActive(true);
-        youDiedText.text = "YOU DIED\nPress F to Restart";
+        if (deadScreen != null)
+        {
+            deadScreen.gameObject.SetActive(true);
+        }
+        ScoreText.gameObject.SetActive(true);
+        ScoreText.GetComponent<RectTransform>().anchoredPosition = new Vector2(-211f, 269f);
+        ScoreText.fontSize = 36;
+        ScoreText.text = score.ToString();
+    }
+    public void Victory(int score)
+    {
+        isVictory = true;
+        if (victorySceen != null)
+        {
+            victorySceen.gameObject.SetActive(true);
+        }
+        ScoreText.gameObject.SetActive(true);
+        ScoreText.GetComponent<RectTransform>().anchoredPosition = new Vector2(-100f, 465f);
+        ScoreText.fontSize = 50;
+        ScoreText.text = score.ToString();
     }
 }

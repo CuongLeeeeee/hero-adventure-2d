@@ -96,9 +96,9 @@ public class NPCShopController : MonoBehaviour
     {
         int price = 0;
 
-        if (itemName == "Health Potion") price = 100;
-        else if (itemName == "Damage Potion") price = 80;
-        else if (itemName == "Dart") price = 50;
+        if (itemName == "Health Potion") price = 10;
+        else if (itemName == "Damage Potion") price = 20;
+        else if (itemName == "Dart") price = 30;
 
         HeroKnight player = FindFirstObjectByType<HeroKnight>();
         if (player != null && player.SpendGold(price))
@@ -200,7 +200,7 @@ public class NPCShopController : MonoBehaviour
                 player.RestoreHealth(10);
                 break;
             case "Damage Potion":
-                player.IncreaseDamage(1);
+                player.IncreaseDamage(5);
                 break;
             case "Dart":
                 player.AddDarts(5);

@@ -25,7 +25,7 @@ public class Dart : MonoBehaviour
             // Lấy m_attackDamage đã được cộng dồn từ vật phẩm trong Shop
             bonusDamage = player.m_attackDamage;
         }
-        totalDamage = damage + bonusDamage;
+        totalDamage = damage + (bonusDamage/4);
     }
 
     public void Launch(int direction)

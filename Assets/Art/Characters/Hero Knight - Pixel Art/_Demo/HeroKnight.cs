@@ -4,6 +4,8 @@ using System.Collections;
 using TMPro;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Unity.AppUI.UI;
+using Unity.Mathematics.Geometry;
 
 public class HeroKnight : MonoBehaviour
 {
@@ -54,7 +56,10 @@ public class HeroKnight : MonoBehaviour
     private float m_rollCurrentTime;
     float lastAttackTime = -10f;
     float lastRollTime = -10f;
+    int m_pointValue = 0;
     public Image healthBar;
+    public TextMeshProUGUI cointCount;
+    public TimerCountUp timer;
     private bool isDead = false;
 
     private float m_nextDartTime = 0f;
@@ -74,7 +79,7 @@ public class HeroKnight : MonoBehaviour
         currentHealth = maxHealth;
         m_gold = 0;
         healthBar.fillAmount = (float)currentHealth / maxHealth;
-        
+        cointCount.text = "x "+m_gold.ToString();
 
         if (Assets.Scripts.GameHUDManager.Instance != null)
         {
@@ -235,7 +240,6 @@ public class HeroKnight : MonoBehaviour
             h.GetComponent<FireDemon>()?.TakeDamage(m_attackDamage);
         }
     }
-
     void AE_SlideDust()
     {
         Vector3 spawnPosition;
@@ -265,7 +269,7 @@ public class HeroKnight : MonoBehaviour
         {
             isDead = true;
             m_animator.SetTrigger("Death");
-            gameManager.GameOver();
+            gameManager.GameOver(CalculateScore());
             AudioManager.instance.PlaySFX(AudioManager.instance.dead);
         }
         else
@@ -273,13 +277,26 @@ public class HeroKnight : MonoBehaviour
             m_animator.SetTrigger("Hurt");
         }
     }
+    public int CalculateScore()
+    {
+        float time = timer.GetTime();
+        float timeBonus = 2.0f - (time / 720f) * (2.0f - 0.5f);
+        timeBonus = Mathf.Clamp(timeBonus, 0.5f, 2.0f);
+        
+        float goldBonus = m_gold / 10f;
 
+        float healthBonus = (currentHealth <=0)? -100 : (float)currentHealth / maxHealth;
+
+        float finalScore = m_pointValue + healthBonus + goldBonus + timeBonus;
+        return finalScore > 0 ? Mathf.CeilToInt((finalScore)) : 0;
+    }
     public bool SpendGold(int amount)
     {
         if (m_gold >= amount)
         {
             m_gold -= amount;
             Debug.Log("Đã trừ " + amount + " vàng. Còn lại: " + m_gold);
+            cointCount.text = "x " + m_gold.ToString();
             return true;
         }
         Debug.Log("Không đủ tiền!");
@@ -288,9 +305,14 @@ public class HeroKnight : MonoBehaviour
     public void AddGold(int amount)
     {
         m_gold += amount;
+        m_pointValue += amount;
+        cointCount.text = "x " + m_gold.ToString();
         Debug.Log("Vàng hiện tại: " + m_gold);
     }
-
+    public void VictoryGame()
+    {
+        gameManager.Victory(CalculateScore());
+    }
     // Debug hitbox
     void OnDrawGizmosSelected()
     {
@@ -303,7 +325,7 @@ public class HeroKnight : MonoBehaviour
     {
         currentHealth += health;
         healthBar.fillAmount = (float)currentHealth / maxHealth;
-        Debug.Log("Đã hồi 5 hp");
+        Debug.Log("Đã hồi "+health +"hp");
     }
 
     public bool IsHealthFull()

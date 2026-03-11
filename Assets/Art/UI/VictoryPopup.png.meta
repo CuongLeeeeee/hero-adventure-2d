@@ -1,0 +1,936 @@
+fileFormatVersion: 2
+guid: 1586a228d5c98504fb561eb50c3a20b4
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 1048990149831687095
+    second: VictoryPopup_0
+  - first:
+      213: -6750938352965384629
+    second: VictoryPopup_1
+  - first:
+      213: -8576335257490392591
+    second: VictoryPopup_2
+  - first:
+      213: -5781833346897433967
+    second: VictoryPopup_3
+  - first:
+      213: 9121388063849814362
+    second: VictoryPopup_4
+  - first:
+      213: -2818043749249370073
+    second: VictoryPopup_5
+  - first:
+      213: -3171152956799682313
+    second: VictoryPopup_6
+  - first:
+      213: -8801181512799659420
+    second: VictoryPopup_7
+  - first:
+      213: 1333563833526232205
+    second: VictoryPopup_8
+  - first:
+      213: 8598613404225606296
+    second: VictoryPopup_9
+  - first:
+      213: 8014235297964384921
+    second: VictoryPopup_10
+  - first:
+      213: -3121621992845897270
+    second: VictoryPopup_11
+  - first:
+      213: -980803572890389000
+    second: VictoryPopup_12
+  - first:
+      213: -397828252796296914
+    second: VictoryPopup_13
+  - first:
+      213: -2134694220138863515
+    second: VictoryPopup_14
+  - first:
+      213: -3223097726357810579
+    second: VictoryPopup_15
+  - first:
+      213: -5009889001118745796
+    second: VictoryPopup_16
+  - first:
+      213: 5696924077756203908
+    second: VictoryPopup_17
+  - first:
+      213: -1216680195750256034
+    second: VictoryPopup_18
+  - first:
+      213: 5124161420946533348
+    second: VictoryPopup_19
+  - first:
+      213: 5043285833896341304
+    second: VictoryPopup_20
+  - first:
+      213: -1375149964986170728
+    second: VictoryPopup_21
+  - first:
+      213: 1406243969568618326
+    second: VictoryPopup_22
+  - first:
+      213: -3177603539720854610
+    second: VictoryPopup_23
+  - first:
+      213: 3486196036760239508
+    second: VictoryPopup_24
+  - first:
+      213: 1927621611826756128
+    second: VictoryPopup_25
+  - first:
+      213: -5646150187033524295
+    second: VictoryPopup_26
+  - first:
+      213: 2313334241521866048
+    second: VictoryPopup_27
+  - first:
+      213: 1535717005122904271
+    second: VictoryPopup_28
+  - first:
+      213: 4342299650292662284
+    second: VictoryPopup_29
+  - first:
+      213: 8599186437002780678
+    second: VictoryPopup_30
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: VictoryPopup_0
+      rect:
+        serializedVersion: 2
+        x: 12
+        y: 313
+        width: 518
+        height: 142
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7bbf995cbf2ce8e00800000000000000
+      internalID: 1048990149831687095
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictoryPopup_1
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 297
+        width: 20
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4600f20659df42a0800000000000000
+      internalID: -6750938352965384629
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictoryPopup_2
+      rect:
+        serializedVersion: 2
+        x: 172
+        y: 297
+        width: 19
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1f970aec58cbaf880800000000000000
+      internalID: -8576335257490392591
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictoryPopup_3
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 297
+        width: 17
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 19aaba7543dc2cfa0800000000000000
+      internalID: -5781833346897433967
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictoryPopup_4
+      rect:
+        serializedVersion: 2
+        x: 209
+        y: 297
+        width: 18
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a59914ced1ea59e70800000000000000
+      internalID: 9121388063849814362
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictoryPopup_5
+      rect:
+        serializedVersion: 2
+        x: 228
+        y: 297
+        width: 15
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7283b74042c44e8d0800000000000000
+      internalID: -2818043749249370073
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictoryPopup_6
+      rect:
+        serializedVersion: 2
+        x: 244
+        y: 310
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f87681ff2dcdf3d0800000000000000
+      internalID: -3171152956799682313
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictoryPopup_7
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 13
+        width: 227
+        height: 288
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 46a57d57b0cebd580800000000000000
+      internalID: -8801181512799659420
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictoryPopup_8
+      rect:
+        serializedVersion: 2
+        x: 244
+        y: 297
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d84a3a6bd35c18210800000000000000
+      internalID: 1333563833526232205
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictoryPopup_9
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 264
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 89297cf6559645770800000000000000
+      internalID: 8598613404225606296
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictoryPopup_10
+      rect:
+        serializedVersion: 2
+        x: 131
+        y: 259
+        width: 16
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9926091da88483f60800000000000000
+      internalID: 8014235297964384921
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictoryPopup_11
+      rect:
+        serializedVersion: 2
+        x: 379
+        y: 273
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ac19f592655cda4d0800000000000000
+      internalID: -3121621992845897270
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictoryPopup_12
+      rect:
+        serializedVersion: 2
+        x: 402
+        y: 118
+        width: 137
+        height: 160
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8f53f63d85c7362f0800000000000000
+      internalID: -980803572890389000
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictoryPopup_13
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 225
+        width: 74
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e216676df41aa7af0800000000000000
+      internalID: -397828252796296914
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictoryPopup_14
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 218
+        width: 26
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5642b88baea0062e0800000000000000
+      internalID: -2134694220138863515
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictoryPopup_15
+      rect:
+        serializedVersion: 2
+        x: 380
+        y: 224
+        width: 30
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d62d210d1b14543d0800000000000000
+      internalID: -3223097726357810579
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictoryPopup_16
+      rect:
+        serializedVersion: 2
+        x: 414
+        y: 224
+        width: 17
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c3b3e2c3f7c497ab0800000000000000
+      internalID: -5009889001118745796
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictoryPopup_17
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 8
+        width: 91
+        height: 162
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 483470fd34a8f0f40800000000000000
+      internalID: 5696924077756203908
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictoryPopup_18
+      rect:
+        serializedVersion: 2
+        x: 113
+        y: 156
+        width: 27
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e52ad07eecb7d1fe0800000000000000
+      internalID: -1216680195750256034
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictoryPopup_19
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 124
+        width: 20
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4eb6743d9adac1740800000000000000
+      internalID: 5124161420946533348
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictoryPopup_20
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 160
+        width: 23
+        height: 45
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83fa626deb95df540800000000000000
+      internalID: 5043285833896341304
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictoryPopup_21
+      rect:
+        serializedVersion: 2
+        x: 386
+        y: 160
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 892cb18846c7aece0800000000000000
+      internalID: -1375149964986170728
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictoryPopup_22
+      rect:
+        serializedVersion: 2
+        x: 409
+        y: 148
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6573ca1907bf38310800000000000000
+      internalID: 1406243969568618326
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictoryPopup_23
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 114
+        width: 21
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ea32ae19a62e6e3d0800000000000000
+      internalID: -3177603539720854610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictoryPopup_24
+      rect:
+        serializedVersion: 2
+        x: 143
+        y: 44
+        width: 10
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 49df77423d4716030800000000000000
+      internalID: 3486196036760239508
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictoryPopup_25
+      rect:
+        serializedVersion: 2
+        x: 380
+        y: 38
+        width: 10
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 02abc4a94a940ca10800000000000000
+      internalID: 1927621611826756128
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictoryPopup_26
+      rect:
+        serializedVersion: 2
+        x: 403
+        y: 55
+        width: 17
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b78c59c158d4a1b0800000000000000
+      internalID: -5646150187033524295
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictoryPopup_27
+      rect:
+        serializedVersion: 2
+        x: 77
+        y: 33
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 04598a07c3d9a1020800000000000000
+      internalID: 2313334241521866048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictoryPopup_28
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 27
+        width: 10
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fc0a0e5ca76ff4510800000000000000
+      internalID: 1535717005122904271
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictoryPopup_29
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 26
+        width: 11
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c004ff38682f24c30800000000000000
+      internalID: 4342299650292662284
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: VictoryPopup_30
+      rect:
+        serializedVersion: 2
+        x: 467
+        y: 29
+        width: 48
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 60068e60182765770800000000000000
+      internalID: 8599186437002780678
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      VictoryPopup_0: 1048990149831687095
+      VictoryPopup_1: -6750938352965384629
+      VictoryPopup_10: 8014235297964384921
+      VictoryPopup_11: -3121621992845897270
+      VictoryPopup_12: -980803572890389000
+      VictoryPopup_13: -397828252796296914
+      VictoryPopup_14: -2134694220138863515
+      VictoryPopup_15: -3223097726357810579
+      VictoryPopup_16: -5009889001118745796
+      VictoryPopup_17: 5696924077756203908
+      VictoryPopup_18: -1216680195750256034
+      VictoryPopup_19: 5124161420946533348
+      VictoryPopup_2: -8576335257490392591
+      VictoryPopup_20: 5043285833896341304
+      VictoryPopup_21: -1375149964986170728
+      VictoryPopup_22: 1406243969568618326
+      VictoryPopup_23: -3177603539720854610
+      VictoryPopup_24: 3486196036760239508
+      VictoryPopup_25: 1927621611826756128
+      VictoryPopup_26: -5646150187033524295
+      VictoryPopup_27: 2313334241521866048
+      VictoryPopup_28: 1535717005122904271
+      VictoryPopup_29: 4342299650292662284
+      VictoryPopup_3: -5781833346897433967
+      VictoryPopup_30: 8599186437002780678
+      VictoryPopup_4: 9121388063849814362
+      VictoryPopup_5: -2818043749249370073
+      VictoryPopup_6: -3171152956799682313
+      VictoryPopup_7: -8801181512799659420
+      VictoryPopup_8: 1333563833526232205
+      VictoryPopup_9: 8598613404225606296
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
